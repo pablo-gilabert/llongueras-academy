@@ -10,7 +10,7 @@ import { saveTeacher, teacherDraft } from '../../lib/TeacherMutations';
 import type { TeacherDraft } from '../../lib/TeacherMutations';
 import { writeError } from '../../lib/AcademyMutations';
 import { t } from '../../i18n/Translations';
-import { confirmChange } from '../../lib/ConfirmAction';
+import { confirmChange, showSavedSuccess } from '../../lib/ConfirmAction';
 import Styles from './Teachers.module.css';
 
 /** Edit the Firestore profile while keeping account provisioning separate. */
@@ -44,6 +44,7 @@ function TeacherEditor({ teacher, courses, onClose }: {
         try {
             await saveTeacher(form, teacher?.id);
             onClose();
+            showSavedSuccess();
         } catch (reason) {
             setError(writeError(reason));
         } finally {
