@@ -10,6 +10,7 @@ import { saveLiveAttendance } from '../../lib/AttendanceMutations';
 import type { LiveAttendanceStatus, AttendanceChange } from '../../lib/AttendanceMutations';
 import { db } from '../../lib/Firebase';
 import { isoDay } from '../../lib/Utils';
+import { confirmChange } from '../../lib/ConfirmAction';
 import Styles from './LiveAttendance.module.css';
 
 interface SavedAttendance {
@@ -188,6 +189,7 @@ export function LiveAttendance() {
         if (isBusy || savingId !== null || error) return;
         const change = getChange(enrollment);
         if (!change) return;
+        if (!await confirmChange('attendance')) return;
         setSavingId(enrollment.id);
         setSaveError('');
         setSuccessId(null);
@@ -290,7 +292,7 @@ export function LiveAttendance() {
                                         setSuccessId(null);
                                     }} /></td>
                                 <td>
-                                    <button type="button" className={Styles.rowSave}
+                                    <button type="button" className={`${Styles.rowSave} academyWriteAction`}
                                         disabled={!rowChange || isBusy || savingId !== null || Boolean(error)}
                                         onClick={() => void saveRow(enrollment)}
                                         aria-label={`Guardar asistencia de ${student.fullName}`}>
