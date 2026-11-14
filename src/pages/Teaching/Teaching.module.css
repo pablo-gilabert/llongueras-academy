@@ -1,0 +1,55 @@
+/* Restricted tutor course overview. */
+.notice,
+.error,
+.note {
+    padding: 16px;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+.notice {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface-2, rgba(127, 127, 127, 0.06));
+    border: 1px solid var(--border, rgba(127, 127, 127, 0.15));
+    margin-bottom: 20px;
+}
+
+.error {
+    border: 1px solid #b34f4f;
+    color: #b34f4f;
+}
+
+.note {
+    opacity: 0.8;
+}
+
+.summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.courseList {
+    display: grid;
+    gap: 12px;
+}
+
+.course {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+    border: 1px solid var(--border, rgba(127, 127, 127, 0.15));
+    border-radius: 12px;
+}
+
+.course > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}

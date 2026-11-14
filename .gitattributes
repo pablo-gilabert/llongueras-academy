@@ -1,0 +1,13 @@
+# Normalize cross-platform text files while preserving binary assets.
+* text=auto
+*.ts text eol=lf
+*.tsx text eol=lf
+*.css text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.svg text eol=lf
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+*.mp4 binary

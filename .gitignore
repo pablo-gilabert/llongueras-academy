@@ -1,0 +1,49 @@
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Hosting, local tooling and editor state
+.vercel/
+.firebase/
+.cache/
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Local runtime configuration (only examples may be public)
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Student and administrative exports: never commit private academic records
+*.csv
+*.tsv
+*.xls
+*.xlsx
+*.ods
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+*.bak
+*.backup
+
+# Privileged Firebase Admin keys and private folders
+*serviceAccount*.json
+*service-account*.json
+*firebase-adminsdk*.json
+*-admin.json
+firebase-private/
+private-data/
+private-files/
+secrets/
+credentials/

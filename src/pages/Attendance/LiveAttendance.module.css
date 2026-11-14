@@ -1,0 +1,497 @@
+/* Attendance records, filters, status and save affordances. */
+/* Firestore attendance controls use existing academy design tokens. */
+.notice {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-soft);
+    color: var(--text-mid);
+    padding: 14px 16px;
+    margin-bottom: 22px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(170px, 1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--text-mid);
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 0;
+}
+
+.field select,
+.field input,
+.status,
+.note {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    color: var(--ink);
+    background: var(--field-bg);
+    padding: 10px 11px;
+    font: inherit;
+    font-size: 12px;
+    min-width: 0;
+}
+
+.summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.summary > div {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 11px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface-soft);
+    color: var(--text-mid);
+    font-size: 12px;
+}
+
+.summary strong {
+    color: var(--ink);
+}
+
+.status {
+    min-width: 125px;
+}
+
+.note {
+    min-width: 145px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    margin-bottom: 14px;
+}
+
+.primary,
+.secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 15px;
+    border-radius: 9px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 750;
+    cursor: pointer;
+}
+
+.primary {
+    color: var(--action-fg);
+    background: var(--action-bg);
+    border: 1px solid var(--action-bg);
+}
+
+.secondary {
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--text-mid);
+}
+
+.primary:disabled,
+.secondary:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.error,
+.success {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    margin: 12px 0;
+    border-radius: 9px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.error {
+    color: var(--error-text);
+    border: 1px solid var(--error-text);
+    background: var(--card);
+}
+
+.success {
+    color: var(--ink);
+    border: 1px solid var(--line);
+    background: var(--surface-soft);
+}
+
+@media (max-width: 640px) {
+    .toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        justify-content: stretch;
+    }
+
+    .actions button {
+        flex: 1;
+    }
+}
+
+/* Accessible SweetAlert-style minutes dialog; no external runtime dependency. */
+.lateLabel { display: block; margin-top: 5px; color: var(--text-mid); }
+.promptOverlay { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; padding: 18px; background: rgba(0,0,0,.52); }
+.promptCard { width: min(100%, 440px); padding: 28px; border-radius: 16px; background: var(--card, #ffffff); color: var(--ink); text-align: center; box-shadow: 0 20px 70px rgba(0,0,0,.25); }
+.promptCard h2 { margin: 12px 0 8px; font-size: 21px; }
+.promptCard p { color: var(--text-mid); }
+.promptIcon { display: grid; place-items: center; margin: auto; width: 55px; height: 55px; border: 3px solid #e9a34c; border-radius: 50%; color: #c48735; font-size: 32px; }
+.promptCard input { box-sizing: border-box; width: 100%; padding: 12px; margin: 15px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--field-bg); color: var(--ink); font: inherit; }
+.promptActions { display: flex; justify-content: center; gap: 12px; }
+.promptActions button { padding: 10px 18px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
+.promptConfirm { background: #2464a3; color: white; }
+
+/* Keep the late-arrival dialog opaque in both application themes. */
+.promptCard { opacity: 1; isolation: isolate; }
+
+/* Soft amber highlight for the recorded late-arrival minutes. */
+.lateLabel {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    margin-top: 7px;
+    padding: 5px 9px;
+    border: 1px solid rgba(207, 132, 32, 0.24);
+    border-radius: 8px;
+    background: rgba(245, 158, 11, 0.13);
+    color: #a45d12;
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.35;
+}
+
+@media (prefers-color-scheme: dark) {
+    .lateLabel { color: #e7ac58; }
+}
+
+/* Consistent attendance rows, including late-arrival indicators. */
+.attendanceRow {
+    height: 94px;
+}
+
+.attendanceRow > td {
+    vertical-align: middle;
+}
+
+.statusStack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6px;
+    min-height: 68px;
+}
+
+.statusStack .lateLabel {
+    margin-top: 0;
+}
+
+.rowSave {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 8px 12px;
+    border: 1px solid #237453;
+    border-radius: 9px;
+    background: #e5f5ed;
+    color: #176343;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 750;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 180ms ease, border-color 180ms ease;
+}
+
+.rowSave:hover:not(:disabled) {
+    background: #cdebdc;
+    border-color: #176343;
+}
+
+.rowSave:focus-visible {
+    outline: 2px solid #3489d3;
+    outline-offset: 3px;
+}
+
+.rowSave:disabled {
+    opacity: .48;
+    cursor: not-allowed;
+}
+
+.successToast {
+    position: fixed;
+    z-index: 10000;
+    left: 50%;
+    top: 22px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px 18px;
+    border: 1px solid #83c8a4;
+    border-radius: 11px;
+    background: #e4f7ed;
+    color: #176343;
+    font-size: 13px;
+    font-weight: 750;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, .16);
+    pointer-events: none;
+}
+
+@media (max-width: 640px) {
+    .attendanceRow {
+        height: 94px;
+    }
+}
+
+/* Vertically align controls in every row, including late arrivals. */
+.attendanceRow > td {
+    height: 94px;
+    vertical-align: middle;
+}
+
+.attendanceRow .statusStack {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    width: 100%;
+    height: 68px;
+    min-height: 68px;
+    gap: 0;
+}
+
+.attendanceRow .statusStack .status {
+    flex: 0 0 auto;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.attendanceRow .statusStack .lateLabel {
+    position: absolute;
+    top: 43px;
+    left: 0;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.attendanceRow .note,
+.attendanceRow .rowSave {
+    height: 40px;
+    box-sizing: border-box;
+}
+
+.attendanceRow .rowSave {
+    width: 100%;
+}
+
+.successToast {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: calc(100vw - 32px);
+    text-align: center;
+}
+
+/* Keep the enrollment badge and late minutes together, before attendance. */
+.enrollmentState {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5px;
+    min-height: 44px;
+}
+
+.enrollmentState .lateLabel {
+    position: static;
+    display: inline-flex;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.attendanceRow .statusStack {
+    height: 40px;
+    min-height: 40px;
+}
+
+/* Show the late-arrival badge beside the enrollment status, not underneath. */
+.enrollmentState {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 7px;
+    min-height: 40px;
+    white-space: nowrap;
+}
+
+.enrollmentState .lateLabel {
+    display: inline-flex;
+    position: static;
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* Attendance directory: one consistent six-column grid on both axes. */
+.attendanceTable {
+    width: 100%;
+    min-width: 1020px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.attendanceTable th,
+.attendanceTable td {
+    box-sizing: border-box;
+    text-align: center;
+    vertical-align: middle;
+    padding: 14px 10px;
+}
+
+.attendanceTable th:nth-child(1), .attendanceTable td:nth-child(1) { width: 21%; }
+.attendanceTable th:nth-child(2), .attendanceTable td:nth-child(2) { width: 14%; }
+.attendanceTable th:nth-child(3), .attendanceTable td:nth-child(3) { width: 23%; }
+.attendanceTable th:nth-child(4), .attendanceTable td:nth-child(4) { width: 15%; }
+.attendanceTable th:nth-child(5), .attendanceTable td:nth-child(5) { width: 16%; }
+.attendanceTable th:nth-child(6), .attendanceTable td:nth-child(6) { width: 11%; }
+
+.attendanceTable .enrollmentState {
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+.attendanceTable .statusStack {
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.attendanceTable .status,
+.attendanceTable .note {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: 40px;
+    margin: 0;
+}
+
+.attendanceTable .rowSave {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding-inline: 5px;
+}
+
+@media (max-width: 1100px) {
+    .attendanceTable {
+        min-width: 1020px;
+    }
+}
+
+/* Compact desktop grid: fit all six columns without clipping Save. */
+.attendanceTable {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+}
+
+.attendanceTable th,
+.attendanceTable td {
+    padding: 12px 5px;
+    overflow-wrap: anywhere;
+}
+
+.attendanceTable th:nth-child(1), .attendanceTable td:nth-child(1) { width: 20%; }
+.attendanceTable th:nth-child(2), .attendanceTable td:nth-child(2) { width: 14%; }
+.attendanceTable th:nth-child(3), .attendanceTable td:nth-child(3) { width: 23%; }
+.attendanceTable th:nth-child(4), .attendanceTable td:nth-child(4) { width: 15%; }
+.attendanceTable th:nth-child(5), .attendanceTable td:nth-child(5) { width: 17%; }
+.attendanceTable th:nth-child(6), .attendanceTable td:nth-child(6) { width: 11%; }
+
+.attendanceTable .enrollmentState {
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.attendanceTable .rowSave {
+    gap: 4px;
+    padding: 7px 4px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.attendanceTable .rowSave svg {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+}
+
+.attendanceTable .status,
+.attendanceTable .note {
+    padding-inline: 6px;
+    font-size: 11px;
+}
+
+.attendanceTable th {
+    font-size: 10px;
+    letter-spacing: 0.035em;
+}
+
+/* On notebook widths, keep everything visible and legible. */
+@media (min-width: 800px) and (max-width: 1200px) {
+    .attendanceTable {
+        min-width: 0;
+    }
+    .attendanceTable th,
+    .attendanceTable td {
+        padding-inline: 3px;
+    }
+    .attendanceTable .lateLabel {
+        padding: 4px 5px;
+        font-size: 10px;
+    }
+}
+
+/* On narrow devices, allow horizontal scrolling rather than clipping controls. */
+@media (max-width: 799px) {
+    .attendanceTable {
+        min-width: 780px;
+    }
+}

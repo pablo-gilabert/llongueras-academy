@@ -1,0 +1,175 @@
+/* Teacher profile listing and assignment editor. */
+/* Private teacher management uses the academy's existing layout and theme tokens. */
+.notice {
+    margin-bottom: 20px;
+    padding: 13px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--surface-soft);
+    color: var(--text-mid);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: min(100%, 420px);
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--muted);
+    background: var(--field-bg);
+}
+
+.search input {
+    width: 100%;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: 12px;
+}
+
+.count,
+.note {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-mid);
+}
+
+.courseTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.courseTag {
+    display: inline-flex;
+    padding: 5px 8px;
+    border-radius: 8px;
+    color: var(--text-mid);
+    background: var(--surface-soft);
+    font-size: 11px;
+    border: 1px solid var(--line);
+}
+
+.editButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 750;
+    color: var(--bronze-dark);
+    cursor: pointer;
+}
+
+.footerLinks {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--bronze-dark);
+}
+
+.footerLinks a {
+    color: inherit;
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.courseFieldset {
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    padding: 14px;
+    min-width: 0;
+}
+
+.courseFieldset legend {
+    padding: 0 5px;
+    font-size: 13px;
+    font-weight: 750;
+    color: var(--ink);
+}
+
+.courseChoices {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 16px;
+}
+
+.courseChoice,
+.checkLine {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    color: var(--text-mid);
+    font-size: 12px;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.courseChoice input,
+.checkLine input {
+    margin-top: 3px;
+    flex-shrink: 0;
+    accent-color: var(--bronze-dark);
+}
+
+.formActions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.error {
+    border: 1px solid var(--error-text);
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--error-text);
+    padding: 12px 15px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+@media (max-width: 620px) {
+    .formGrid,
+    .courseChoices {
+        grid-template-columns: 1fr;
+    }
+
+    .toolbar,
+    .search {
+        width: 100%;
+    }
+}

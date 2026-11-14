@@ -1,0 +1,85 @@
+/* Shell elements on the public landing page. */
+/* Brand navigation shared by every academic role. */
+
+.brandHome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+    color: var(--text-mid);
+    transition: opacity .2s ease;
+}
+
+.brandHome:hover {
+    opacity: .76;
+}
+
+.brandLogo {
+    display: block;
+    width: min(178px, 100%);
+    height: auto;
+    padding: 8px;
+    border-radius: 7px;
+    background: #050505;
+    object-fit: contain;
+}
+
+/* Center the call to action on the logo axis and make it easy to recognize. */
+.brandCaption {
+    width: 100%;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .3px;
+    line-height: 1.4;
+    text-align: center;
+    color: var(--ink);
+}
+
+.brandHome:hover .brandCaption {
+    color: var(--ink);
+}
+
+.mobileHome {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: var(--text-mid);
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.mobileLogo {
+    width: 104px;
+    height: auto;
+    padding: 4px;
+    border-radius: 4px;
+    background: #050505;
+    object-fit: contain;
+}
+
+@media (max-width: 860px) {
+    .mobileHome {
+        display: flex;
+    }
+
+    .pageTitle {
+        display: none;
+    }
+}
+
+@media (max-width: 550px) {
+    .mobileLogo {
+        width: 78px;
+    }
+
+    .mobileHome {
+        font-size: 10px;
+    }
+}

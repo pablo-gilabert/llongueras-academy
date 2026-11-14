@@ -1,0 +1,175 @@
+rules_version = '2';
+
+service cloud.firestore {
+    match /databases/{database}/documents {
+
+        // ==========================================
+        // VERIFIED INSTITUTIONAL ROLES
+        // ==========================================
+
+        function isAdmin() {
+            return request.auth != null
+                && request.auth.token.role == 'admin';
+        }
+
+        function isTutor() {
+            return request.auth != null
+                && request.auth.token.role == 'tutor'
+                && request.auth.token.teacherId is string;
+        }
+
+        // Confirm that the account owns the active, assigned teacher profile.
+        function linkedTeacher() {
+            return get(/databases/$(database)/documents/teachers/$(request.auth.token.teacherId)).data;
+        }
+
+        function canGetAssignedCourse(courseId) {
+            return isTutor()
+                && exists(/databases/$(database)/documents/teachers/$(request.auth.token.teacherId))
+                && linkedTeacher().active == true
+                && linkedTeacher().authUid == request.auth.uid
+                && courseId in linkedTeacher().courseIds;
+        }
+
+        // ==========================================
+        // COURSES
+        // ==========================================
+
+        match /courses/{courseId} {
+            allow get: if isAdmin() || canGetAssignedCourse(courseId);
+            allow list: if isAdmin();
+            allow create, update, delete: if isAdmin();
+        }
+
+        // ==========================================
+        // STUDENTS
+        // ==========================================
+
+        match /students/{studentId} {
+            allow read, write: if isAdmin();
+        }
+
+        // ==========================================
+        // ENROLLMENTS
+        // ==========================================
+
+        match /enrollments/{enrollmentId} {
+            allow read, write: if isAdmin();
+        }
+
+        // ==========================================
+        // REAL ATTENDANCE
+        // ==========================================
+
+        // Attendance contains private academic information: administrators only.
+        match /attendance/{attendanceId} {
+            allow read, write: if isAdmin();
+        }
+
+        // ==========================================
+        // REAL EVALUATIONS AND GRADES
+        // ==========================================
+
+        // Assessments and student grades are private academic records.
+        match /evaluations/{evaluationId} {
+            allow read, write: if isAdmin();
+        }
+
+        match /grades/{gradeId} {
+            allow read, write: if isAdmin();
+        }
+
+        // ==========================================
+        // TEACHERS
+        // ==========================================
+
+        match /teachers/{teacherId} {
+            allow get: if isAdmin() || (
+                isTutor()
+                && request.auth.token.teacherId == teacherId
+                && resource.data.active == true
+                && resource.data.authUid == request.auth.uid
+            );
+
+            allow list: if isAdmin();
+            allow create, update, delete: if isAdmin();
+        }
+
+        // ==========================================
+        // SELF-SERVICE ACCOUNT PROFILES
+        // ==========================================
+
+        // Each authenticated user may maintain only their own identity fields.
+        // Institutional roles remain exclusively in trusted Firebase Auth claims.
+        function validAccountProfile() {
+            return request.resource.data.keys().hasOnly(['firstName', 'lastName', 'dni', 'updatedAt'])
+                && request.resource.data.keys().hasAll(['firstName', 'lastName', 'dni', 'updatedAt'])
+                && request.resource.data.firstName is string
+                && request.resource.data.firstName.size() >= 1
+                && request.resource.data.firstName.size() <= 80
+                && request.resource.data.lastName is string
+                && request.resource.data.lastName.size() >= 1
+                && request.resource.data.lastName.size() <= 80
+                && request.resource.data.dni is string
+                && (request.resource.data.dni == ''
+                    || request.resource.data.dni.matches('^[0-9]{6,12}$'))
+                && request.resource.data.updatedAt == request.time;
+        }
+
+        match /accountProfiles/{accountId} {
+            allow get: if request.auth != null && request.auth.uid == accountId;
+            allow list, delete: if false;
+            allow create, update: if request.auth != null
+                && request.auth.uid == accountId
+                && validAccountProfile();
+        }
+
+        // ==========================================
+        // ADMINISTRATIVE ACTIVITY FEED
+        // ==========================================
+
+        // The feed stores action summaries, never private field values.
+        // The excluded account is identified by a trusted Auth custom claim.
+        function validActivityEntry() {
+            return request.resource.data.keys().hasOnly([
+                    'actorUid', 'actorName', 'action', 'subject', 'context', 'createdAt'
+                ])
+                && request.resource.data.keys().hasAll([
+                    'actorUid', 'actorName', 'action', 'subject', 'context', 'createdAt'
+                ])
+                && request.resource.data.actorUid == request.auth.uid
+                && request.resource.data.actorName is string
+                && request.resource.data.actorName.size() >= 1
+                && request.resource.data.actorName.size() <= 120
+                && request.resource.data.subject is string
+                && request.resource.data.subject.size() >= 1
+                && request.resource.data.subject.size() <= 160
+                && request.resource.data.context is string
+                && request.resource.data.context.size() <= 180
+                && request.resource.data.createdAt == request.time
+                && request.resource.data.action in [
+                    'student.created', 'student.updated',
+                    'enrollment.created', 'enrollment.updated', 'enrollment.transferred',
+                    'course.updated', 'course.renamed', 'course.description_updated',
+                    'teacher.created', 'teacher.updated', 'attendance.saved',
+                    'evaluation.created', 'grades.saved'
+                ];
+        }
+
+        match /auditLogs/{eventId} {
+            allow get, list: if isAdmin();
+            allow create: if isAdmin()
+                && request.auth.token.get('auditExcluded', false) != true
+                && validActivityEntry();
+            allow update, delete: if false;
+        }
+
+        // ==========================================
+        // USER PROFILES
+        // ==========================================
+
+        match /users/{userId} {
+            allow read, write: if isAdmin();
+        }
+    }
+}
