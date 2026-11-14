@@ -129,7 +129,7 @@ export function Modal({ title, subtitle, children, onClose, width = 'normal' }: 
 }) {
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => {
-            if (e.key === 'Escape')
+            if (e.key === 'Escape' && !document.querySelector('.swal2-container'))
                 onClose();
         };
         window.addEventListener('keydown', onKey);

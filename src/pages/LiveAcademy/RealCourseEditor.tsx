@@ -7,6 +7,7 @@ import { courseDraft, saveRealCourse } from '../../lib/CourseMutations';
 import type { CourseDraft } from '../../lib/CourseMutations';
 import { writeError } from '../../lib/AcademyMutations';
 import { t } from '../../i18n/Translations';
+import { confirmChange } from '../../lib/ConfirmAction';
 import Styles from './LiveAcademy.module.css';
 
 export function RealCourseEditor({ course, occupied, enrollmentCount, onClose }: {
@@ -30,6 +31,7 @@ export function RealCourseEditor({ course, occupied, enrollmentCount, onClose }:
             setError('Confirmá que querés desactivar el curso sin eliminar sus inscripciones.');
             return;
         }
+        if (!await confirmChange('update')) return;
         setError('');
         setSaving(true);
         try {
@@ -111,7 +113,7 @@ export function RealCourseEditor({ course, occupied, enrollmentCount, onClose }:
             {error && <p className={Styles.error} role="alert">{t(error)}</p>}
             <div className={Styles.formActions}>
                 <Button variant="secondary" disabled={saving} onClick={onClose}>{t('Cancelar')}</Button>
-                <Button type="submit" disabled={saving}>{t(saving ? 'Guardando…' : 'Guardar curso')}</Button>
+                <Button type="submit" className="academyWriteAction" disabled={saving}>{t(saving ? 'Guardando…' : 'Guardar curso')}</Button>
             </div>
         </form>
     </Modal>;

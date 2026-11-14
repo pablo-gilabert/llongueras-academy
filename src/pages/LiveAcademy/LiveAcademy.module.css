@@ -538,17 +538,17 @@
     .studentCount { justify-content: flex-start; min-height: auto; }
 }
 
-/* Subtle warm-bronze edit action, distinct from the read-only link. */
+/* Accessible soft-green edit action, distinct from the read-only link. */
 .editStudentButton {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
     padding: 7px 10px;
-    border: 1px solid #DAC7B8;
+    border: 1px solid #b7d7c1;
     border-radius: 8px;
-    background: #F7F1EB;
-    color: #73543F;
+    background: #e6f3ea;
+    color: #205c3c;
     font: inherit;
     font-size: 12px;
     font-weight: 650;
@@ -557,11 +557,11 @@
     transition: background-color 150ms ease, border-color 150ms ease;
 }
 .editStudentButton:hover {
-    background: #EDE0D4;
-    border-color: #B99A83;
+    background: #d3e9d9;
+    border-color: #82b396;
 }
 .editStudentButton:focus-visible {
-    outline: 2px solid #73543F;
+    outline: 3px solid #23754e;
     outline-offset: 2px;
 }
 
@@ -593,6 +593,24 @@
 }
 
 
+
+/* The inline enrollments link must remain visibly interactive and accessible. */
+.hintLink {
+    color: #246d43;
+    font-weight: 800;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+    transition: color 160ms ease, background-color 160ms ease;
+}
+.hintLink:hover { color: #174b2c; background-color: #edf7ef; }
+.hintLink:focus-visible {
+    color: #174b2c;
+    background-color: #e4f2e8;
+    outline: 3px solid #28764c !important;
+    outline-offset: 3px;
+}
+
 /* Center the students directory columns without affecting other tables. */
 .studentsTable th,
 .studentsTable td {
@@ -601,11 +619,22 @@
 }
 
 .studentsTable :global(.tablePerson) {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    text-align: left;
+    text-align: center;
     max-width: 100%;
+    margin-inline: auto;
+}
+.studentsTable :global(.tablePerson) > div {
+    min-width: 0;
+    max-width: 100%;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+.studentsTable :global(.tablePerson) :global(.muted) {
+    display: block;
+    text-align: center;
 }
 
 .studentsTable td > .actions {

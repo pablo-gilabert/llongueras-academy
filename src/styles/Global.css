@@ -367,32 +367,51 @@ a {
     color: var(--success-text);
 }
 
+
+/* Soft green for all actions that write academic or account information. */
+button.academyWriteAction, a.academyWriteAction {
+    background: #e6f3ea;
+    color: #205c3c;
+    border: 1px solid #b7d7c1;
+    border-radius: 9px;
+    font-weight: 750;
+}
+button.academyWriteAction:not(:disabled):hover, a.academyWriteAction:hover {
+    background: #d3e9d9;
+    border-color: #82b396;
+    color: #194a30;
+}
+button.academyWriteAction:focus-visible, a.academyWriteAction:focus-visible {
+    outline: 3px solid #23754e !important;
+    outline-offset: 3px;
+}
+
 /* Consistent interaction feedback across the entire application. */
-:where(button, a, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]) {
-    transition: opacity 180ms ease, filter 180ms ease, box-shadow 180ms ease, outline-color 180ms ease;
+:where(button, a, [role="button"], [role="link"], summary, input[type="button"], input[type="submit"], input[type="reset"]) {
+    transition: opacity 180ms ease, filter 180ms ease, box-shadow 180ms ease, outline-color 180ms ease, background-color 180ms ease;
 }
 
 /* Preserve component-specific colors and backgrounds while making actions responsive. */
 @media (hover: hover) {
-    :where(button, a, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):not(:disabled):not([aria-disabled="true"]):hover {
+    :where(button, a, [role="button"], [role="link"], summary, input[type="button"], input[type="submit"], input[type="reset"]):not(:disabled):not([aria-disabled="true"]):hover {
         filter: brightness(0.94);
         opacity: 0.88;
     }
 }
 
 /* Visible keyboard focus, including links and custom button-like controls. */
-:where(button, a, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):not(:disabled):focus-visible {
+:where(button, a, [role="button"], [role="link"], summary, input[type="button"], input[type="submit"], input[type="reset"]):not(:disabled):focus-visible {
     outline: 3px solid var(--focus-ring) !important;
     outline-offset: 3px;
 }
 
 /* Feedback on click without changing button sizing or page layout. */
-:where(button, a, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]):not(:disabled):active {
+:where(button, a, [role="button"], [role="link"], summary, input[type="button"], input[type="submit"], input[type="reset"]):not(:disabled):active {
     filter: brightness(0.9);
 }
 
 @media (prefers-reduced-motion: reduce) {
-    :where(button, a, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]) {
+    :where(button, a, [role="button"], [role="link"], summary, input[type="button"], input[type="submit"], input[type="reset"]) {
         transition: none;
     }
 }

@@ -10,6 +10,7 @@ import { saveTeacher, teacherDraft } from '../../lib/TeacherMutations';
 import type { TeacherDraft } from '../../lib/TeacherMutations';
 import { writeError } from '../../lib/AcademyMutations';
 import { t } from '../../i18n/Translations';
+import { confirmChange } from '../../lib/ConfirmAction';
 import Styles from './Teachers.module.css';
 
 /** Edit the Firestore profile while keeping account provisioning separate. */
@@ -37,6 +38,7 @@ function TeacherEditor({ teacher, courses, onClose }: {
             setError('Confirmá la desactivación del docente.');
             return;
         }
+        if (!await confirmChange(teacher ? 'update' : 'create')) return;
         setSaving(true);
         setError('');
         try {
@@ -127,7 +129,7 @@ function TeacherEditor({ teacher, courses, onClose }: {
             {error && <p className={Styles.error} role="alert">{t(error)}</p>}
             <div className={Styles.formActions}>
                 <Button variant="secondary" onClick={onClose} disabled={saving}>{t('Cancelar')}</Button>
-                <Button type="submit" disabled={saving}>{t(saving ? 'Guardando…' : 'Guardar docente')}</Button>
+                <Button type="submit" className="academyWriteAction" disabled={saving}>{t(saving ? 'Guardando…' : 'Guardar docente')}</Button>
             </div>
         </form>
     </Modal>;
@@ -153,7 +155,7 @@ export function Teachers() {
             kicker={t('ADMINISTRACIÓN DE DOCENTES')}
             title={t('Directorio de docentes')}
             description={t('Registrá docentes y asignales los cursos existentes. Las cuentas de acceso se habilitan por separado.')}
-            action={<Button disabled={!available} onClick={() => setCreating(true)}>
+            action={<Button disabled={!available} onClick={() => { void confirmChange('openCreate').then(ok => { if (ok) setCreating(true); }); }}>
                 <Plus size={16} /> {t('Agregar docente')}
             </Button>}
         />
@@ -212,7 +214,7 @@ export function Teachers() {
                         <td><Pill tone={teacher.authUid ? 'success' : 'warning'}>
                             {t(teacher.authUid ? 'Cuenta vinculada' : 'Sin cuenta vinculada')}
                         </Pill></td>
-                        <td><button type="button" className={Styles.editButton} onClick={() => setEditingId(teacher.id)}>
+                        <td><button type="button" className={`${Styles.editButton} academyWriteAction`} onClick={() => setEditingId(teacher.id)}>
                             <Pencil size={14} /> {t('Editar ficha')}
                         </button></td>
                     </tr>)}</tbody>

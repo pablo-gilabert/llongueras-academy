@@ -10,6 +10,7 @@ import { createRealEvaluation, saveRealGrades } from '../../lib/EvaluationMutati
 import type { GradeChange, RealEvaluation, RealGrade } from '../../lib/EvaluationMutations';
 import { db } from '../../lib/Firebase';
 import { isoDay } from '../../lib/Utils';
+import { confirmChange } from '../../lib/ConfirmAction';
 import Styles from './LiveEvaluations.module.css';
 
 interface DraftGrade {
@@ -192,6 +193,7 @@ export function LiveEvaluations() {
     const createEvaluation = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (creating || saving || !selectedCourseId || selectedCourse?.active !== true) return;
+        if (!await confirmChange('create')) return;
         setCreating(true);
         setFormError('');
         setSuccess('');
@@ -225,6 +227,7 @@ export function LiveEvaluations() {
             setGradeError('Revisá las notas: deben estar dentro de la escala. No se pueden borrar notas guardadas desde esta pantalla.');
             return;
         }
+        if (!await confirmChange('grades')) return;
         setSaving(true);
         try {
             const count = await saveRealGrades({ evaluation: selected, changes });
@@ -261,7 +264,7 @@ export function LiveEvaluations() {
             </div>
             <div className={Styles.actions}>
                 <button type="button" className={Styles.secondary}
-                    onClick={() => { setShowCreate(value => !value); setFormError(''); }}
+                    onClick={() => { if (showCreate) { setShowCreate(false); setFormError(''); } else { void confirmChange('openCreate').then(ok => { if (ok) { setShowCreate(true); setFormError(''); } }); } }}
                     disabled={saving || creating || !selectedCourseId || selectedCourse?.active !== true}>
                     <Plus size={16} /> {t('Agregar evaluación académica')}
                 </button>
@@ -285,7 +288,7 @@ export function LiveEvaluations() {
                 {formError && <p className={Styles.error} role="alert">{t(formError)}</p>}
                 <div className={Styles.actions}>
                     <button type="button" className={Styles.secondary} onClick={() => setShowCreate(false)} disabled={creating}>{t('Cancelar')}</button>
-                    <button type="submit" className={Styles.primary} disabled={creating}><Plus size={16} /> {creating ? t('Guardando…') : t('Crear evaluación')}</button>
+                    <button type="submit" className={`${Styles.primary} academyWriteAction`} disabled={creating}><Plus size={16} /> {creating ? t('Guardando…') : t('Crear evaluación')}</button>
                 </div>
             </form>}
             {loadProblem && <p className={Styles.error} role="alert">{t(loadProblem)}</p>}
@@ -328,7 +331,7 @@ export function LiveEvaluations() {
                 </div>
                 <div className={Styles.actions}>
                     <span className={Styles.muted}>{changes.length} {t('notas pendientes')}</span>
-                    <button type="button" className={Styles.primary} onClick={saveGrades}
+                    <button type="button" className={`${Styles.primary} academyWriteAction`} onClick={saveGrades}
                         disabled={saving || invalidGrade || !canGrade || !changes.length || changes.length > 150}>
                         <Save size={16} /> {saving ? t('Guardando…') : t('Guardar calificaciones del curso')}
                     </button>

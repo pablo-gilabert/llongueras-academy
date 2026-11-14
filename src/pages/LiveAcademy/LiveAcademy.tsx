@@ -9,6 +9,7 @@ import { EnrollmentEditor, StudentEditor, TransferEditor } from './LiveAcademyFo
 import { getActiveLocale, localizeCourseName, t } from '../../i18n/Translations';
 import { saveStudent, studentDraft, updateEnrollment, writeError } from '../../lib/AcademyMutations';
 import type { StudentDraft, EnrollmentDraft, AcademicStatus } from '../../lib/AcademyMutations';
+import { confirmChange } from '../../lib/ConfirmAction';
 import Styles from './LiveAcademy.module.css';
 
 export function DataMode() {
@@ -144,7 +145,7 @@ export function LiveCourses() {
                             </Link>
                             <button
                                 type="button"
-                                className={Styles.secondaryButton}
+                                className={`${Styles.secondaryButton} academyWriteAction`}
                                 disabled={courses.loading || Boolean(courses.error) || enrollments.loading || Boolean(enrollments.error)}
                                 onClick={() => setEditingCourseId(course.id)}
                             >
@@ -218,6 +219,7 @@ export function LiveStudents() {
         if (!selectedStudent || !editingDetail || savingDetail) return;
         const draft = studentDraft(selectedStudent);
         const nextDraft = { ...draft, [editingDetail]: detailValue.trim() };
+        if (!await confirmChange('update')) return;
         setSavingDetail(true);
         setDetailError('');
         try {
@@ -260,7 +262,7 @@ export function LiveStudents() {
             kicker={t('ADMINISTRACIÓN ACADÉMICA')}
             title={t('Alumnos registrados')}
             description={t('Los datos personales se muestran únicamente a administradores autenticados.')}
-            action={<button type="button" className={Styles.primaryButton} disabled={students.loading || Boolean(students.error)} onClick={() => setCreatingStudent(true)}><Plus size={16} />{t('Agregar alumno')}</button>}
+            action={<button type="button" className={Styles.primaryButton} disabled={students.loading || Boolean(students.error)} onClick={() => { void confirmChange('openCreate').then(ok => { if (ok) setCreatingStudent(true); }); }}><Plus size={16} />{t('Agregar alumno')}</button>}
         />
         <div className={Styles.hint}>
             {t('Cada alumno tiene una ficha editable por administradores, incluso si le faltan DNI, correo, fechas u otros datos. Para corregir inscripciones, utilizá la sección ')}<Link className={Styles.hintLink} to="/app/enrollments">{t('Inscripciones')}</Link>.
@@ -356,7 +358,7 @@ export function LiveStudents() {
                                     autoFocus
                                 />
                                 <span className={Styles.detailEditActions}>
-                                    <button type="button" className={Styles.detailSave} disabled={savingDetail} onClick={() => void saveDetail()}>{t(savingDetail ? 'Guardando…' : 'Guardar')}</button>
+                                    <button type="button" className={`${Styles.detailSave} academyWriteAction`} disabled={savingDetail} onClick={() => void saveDetail()}>{t(savingDetail ? 'Guardando…' : 'Guardar')}</button>
                                     <button type="button" className={Styles.detailCancel} disabled={savingDetail} onClick={() => setEditingDetail(null)}>{t('Cancelar')}</button>
                                 </span>
                             </dd> :
@@ -364,7 +366,7 @@ export function LiveStudents() {
                                 <span>{detail.display}</span>
                                 <button
                                     type="button"
-                                    className={Styles.detailEditButton}
+                                    className={`${Styles.detailEditButton} academyWriteAction`}
                                     onClick={() => startDetailEdit(detail.field, detail.value)}
                                     aria-label={`Editar ${detail.label}`}
                                 ><Pencil size={14} aria-hidden="true" />{t('Editar')} {detail.label}</button>
@@ -437,6 +439,7 @@ export function LiveEnrollments() {
             completionNotes: selectedEnrollment.completionNotes ?? '',
         };
         const nextDraft = { ...draft, [editingEnrollmentField]: enrollmentFieldValue };
+        if (!await confirmChange('update')) return;
         setSavingEnrollmentField(true);
         setEnrollmentFieldError('');
         try {
@@ -486,7 +489,7 @@ export function LiveEnrollments() {
             kicker={t('INSCRIPCIONES ACADÉMICAS')}
             title={t('Inscripciones de alumnos')}
             description={t('Cada vínculo conserva el curso, la fecha de inicio y las observaciones originales sin asumir estados faltantes.')}
-            action={<button type="button" className={Styles.primaryButton} disabled={students.loading || courses.loading || enrollments.loading || Boolean(students.error || courses.error || enrollments.error)} onClick={() => setCreatingEnrollment(true)}><Plus size={16} />{t('Nueva inscripción')}</button>}
+            action={<button type="button" className={Styles.primaryButton} disabled={students.loading || courses.loading || enrollments.loading || Boolean(students.error || courses.error || enrollments.error)} onClick={() => { void confirmChange('openCreate').then(ok => { if (ok) setCreatingEnrollment(true); }); }}><Plus size={16} />{t('Nueva inscripción')}</button>}
         />
         <div className={Styles.hint}>
             {t('Un alumno puede cursar varias formaciones. Los traslados conservan la inscripción original y crean una nueva.')}
@@ -540,7 +543,7 @@ export function LiveEnrollments() {
                     <td>{localizeCourseName(coursesById.get(item.courseId)?.name) || t('Curso sin ficha')}</td>
                     <td>{displayDate(item.startDate)}</td>
                     <td><Pill tone={item.status === 'active' ? 'success' : item.status === 'pending_review' ? 'warning' : 'neutral'}>{t(statusText(item.status))}</Pill></td>
-                    <td><button type="button" className={Styles.tableLink} onClick={() => setSelectedEnrollmentId(item.id)}><Pencil size={14} aria-hidden="true" />{t('Editar inscripción')}</button></td>
+                    <td><button type="button" className={`${Styles.tableLink} academyWriteAction`} onClick={() => setSelectedEnrollmentId(item.id)}><Pencil size={14} aria-hidden="true" />{t('Editar inscripción')}</button></td>
                 </tr>)}</tbody></table>
                 {!filtered.length && <EmptyState title={t('Sin inscripciones')} message={t('No hay inscripciones para ese filtro.')} />}
             </div>}
@@ -575,14 +578,14 @@ export function LiveEnrollments() {
                                             if (event.key === 'Escape') setEditingEnrollmentField(null);
                                         }} autoFocus />}
                                 <span className={Styles.detailEditActions}>
-                                    <button type="button" className={Styles.detailSave} disabled={savingEnrollmentField} onClick={() => void saveEnrollmentField()}>{t(savingEnrollmentField ? 'Guardando…' : 'Guardar')}</button>
+                                    <button type="button" className={`${Styles.detailSave} academyWriteAction`} disabled={savingEnrollmentField} onClick={() => void saveEnrollmentField()}>{t(savingEnrollmentField ? 'Guardando…' : 'Guardar')}</button>
                                     <button type="button" className={Styles.detailCancel} disabled={savingEnrollmentField} onClick={() => setEditingEnrollmentField(null)}>{t('Cancelar')}</button>
                                 </span>
                             </dd> :
                             <dd className={Styles.detailRead}>
                                 <span>{detail.display}</span>
                                 {selectedEnrollment.status !== 'transferred' &&
-                                    <button type="button" className={Styles.detailEditButton} onClick={() => startEnrollmentFieldEdit(detail.field, detail.value)}>
+                                    <button type="button" className={`${Styles.detailEditButton} academyWriteAction`} onClick={() => startEnrollmentFieldEdit(detail.field, detail.value)}>
                                         <Pencil size={14} aria-hidden="true" />{t('Editar')} {detail.label}
                                     </button>}
                             </dd>}
@@ -604,7 +607,7 @@ export function LiveEnrollments() {
             {enrollmentFieldError && <p className={Styles.error} role="alert">{enrollmentFieldError}</p>}
             {selectedEnrollment.status !== 'transferred' && !['completed', 'withdrawn'].includes(selectedEnrollment.status) &&
                 <div className={Styles.formActions}>
-                    <button type="button" className={Styles.secondaryButton} onClick={() => {
+                    <button type="button" className={`${Styles.secondaryButton} academyWriteAction`} onClick={() => {
                         setTransferringEnrollmentId(selectedEnrollment.id);
                         closeEnrollmentDetails();
                     }}>{t('Cambiar de curso')}</button>
