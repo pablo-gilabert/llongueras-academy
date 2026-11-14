@@ -6,7 +6,7 @@ import { RealCourseEditor } from './RealCourseEditor';
 import { EmptyState, Modal, PageTitle, Panel, Pill } from '../../components/Common/Common';
 import { useAcademy } from '../../context/AcademyContext';
 import { EnrollmentEditor, StudentEditor, TransferEditor } from './LiveAcademyForms';
-import { t } from '../../i18n/Translations';
+import { getActiveLocale, localizeCourseName, t } from '../../i18n/Translations';
 import { saveStudent, studentDraft, updateEnrollment, writeError } from '../../lib/AcademyMutations';
 import type { StudentDraft, EnrollmentDraft, AcademicStatus } from '../../lib/AcademyMutations';
 import Styles from './LiveAcademy.module.css';
@@ -78,9 +78,9 @@ export function LiveCourses() {
     const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
     const [editingCourseId, setEditingCourseId] = useState<string | null>(null);
     const studentsById = useMemo(() => new Map(students.items.map(student => [student.id, student])), [students.items]);
-    const sortedCourses = courses.items.slice().sort((a, b) => a.name.localeCompare(b.name, 'es'));
+    const sortedCourses = courses.items.slice().sort((a, b) => localizeCourseName(a.name).localeCompare(localizeCourseName(b.name), getActiveLocale()));
     const shown = sortedCourses.filter(course =>
-        `${course.name} ${course.modality ?? ''} ${course.description ?? ''}`
+        `${course.name} ${localizeCourseName(course.name)} ${course.modality ?? ''} ${course.description ?? ''}`
             .toLocaleLowerCase().includes(search.toLocaleLowerCase()));
     const selected = sortedCourses.find(course => course.id === selectedCourse);
     const roster = selected ? enrollments.items.filter(enrollment => enrollment.courseId === selected.id) : [];
@@ -119,7 +119,7 @@ export function LiveCourses() {
                                 {enrollments.loading ? '…' : enrollments.error ? '—' : studentCount} {t(studentCount === 1 ? 'Alumno' : 'Alumnos')}
                             </span>
                         </div>
-                        <h3>{course.name}</h3>
+                        <h3>{localizeCourseName(course.name)}</h3>
                         <Pill tone={course.active ? 'success' : 'warning'}>{t(course.active ? 'Disponible' : 'Inactivo')}</Pill>
                         <div className={Styles.courseDetails}>
                             <span><strong>{t('Modalidad')}:</strong> {course.modality ? t(course.modality) : t('A confirmar')}</span>
@@ -164,7 +164,7 @@ export function LiveCourses() {
             onClose={() => setEditingCourseId(null)}
         />}
         {selected && <Modal
-            title={selected.name}
+            title={localizeCourseName(selected.name)}
             subtitle={t('Alumnos vinculados por inscripciones registradas en Firestore.')}
             width="wide"
             onClose={() => setSelectedCourse(null)}
@@ -299,7 +299,7 @@ export function LiveStudents() {
             </div>
             <div className={Styles.courseFilterGroup} role="group" aria-label={t('Filtrar por carrera')}>
                 <button type="button" aria-pressed={courseFilter === 'all'} className={courseFilter === 'all' ? Styles.courseFilterActive : Styles.courseFilterButton} onClick={() => setCourseFilter('all')}>{t('Todas las carreras')}</button>
-                {courses.items.map(course => <button type="button" key={course.id} aria-pressed={courseFilter === course.id} className={courseFilter === course.id ? Styles.courseFilterActive : Styles.courseFilterButton} onClick={() => setCourseFilter(course.id)} disabled={Boolean(courses.error) || enrollments.loading || Boolean(enrollments.error)}>{course.name}</button>)}
+                {courses.items.map(course => <button type="button" key={course.id} aria-pressed={courseFilter === course.id} className={courseFilter === course.id ? Styles.courseFilterActive : Styles.courseFilterButton} onClick={() => setCourseFilter(course.id)} disabled={Boolean(courses.error) || enrollments.loading || Boolean(enrollments.error)}>{localizeCourseName(course.name)}</button>)}
             </div>
             {courseFilter !== 'all' && enrollments.error && <p className={Styles.error} role="alert">{t('No se pudieron cargar las inscripciones para filtrar por carrera.')}</p>}
             <LoadState loading={students.loading} error={students.error} />
@@ -356,8 +356,8 @@ export function LiveStudents() {
                                     autoFocus
                                 />
                                 <span className={Styles.detailEditActions}>
-                                    <button type="button" className={Styles.detailSave} disabled={savingDetail} onClick={() => void saveDetail()}>{savingDetail ? 'Guardando…' : 'Guardar'}</button>
-                                    <button type="button" className={Styles.detailCancel} disabled={savingDetail} onClick={() => setEditingDetail(null)}>Cancelar</button>
+                                    <button type="button" className={Styles.detailSave} disabled={savingDetail} onClick={() => void saveDetail()}>{t(savingDetail ? 'Guardando…' : 'Guardar')}</button>
+                                    <button type="button" className={Styles.detailCancel} disabled={savingDetail} onClick={() => setEditingDetail(null)}>{t('Cancelar')}</button>
                                 </span>
                             </dd> :
                             <dd className={Styles.detailRead}>
@@ -367,13 +367,13 @@ export function LiveStudents() {
                                     className={Styles.detailEditButton}
                                     onClick={() => startDetailEdit(detail.field, detail.value)}
                                     aria-label={`Editar ${detail.label}`}
-                                ><Pencil size={14} aria-hidden="true" />Editar {detail.label}</button>
+                                ><Pencil size={14} aria-hidden="true" />{t('Editar')} {detail.label}</button>
                             </dd>}
                     </div>
                 )}
                 <div className={`${Styles.detailCard} ${Styles.full}`}>
                     <dt>{t('Cursos en los que está inscrito')}</dt>
-                    <dd>{enrollments.loading ? '…' : enrollments.error ? '—' : [...new Set(selectedEnrollments.map(enrollment => coursesById.get(enrollment.courseId)?.name ?? t('Curso sin ficha')))].join(', ') || t('Sin inscripciones')}</dd>
+                    <dd>{enrollments.loading ? '…' : enrollments.error ? '—' : [...new Set(selectedEnrollments.map(enrollment => localizeCourseName(coursesById.get(enrollment.courseId)?.name) || t('Curso sin ficha')))].join(', ') || t('Sin inscripciones')}</dd>
                 </div>
             </dl>
             {detailError && <p className={Styles.error} role="alert">{detailError}</p>}
@@ -458,7 +458,7 @@ export function LiveEnrollments() {
             return false;
         const student = studentsById.get(item.studentId);
         const course = coursesById.get(item.courseId);
-        return `${student?.fullName ?? ''} ${course?.name ?? ''}`.toLocaleLowerCase().includes(search.toLocaleLowerCase());
+        return `${student?.fullName ?? ''} ${course?.name ?? ''} ${localizeCourseName(course?.name)}`.toLocaleLowerCase().includes(search.toLocaleLowerCase());
     }).sort((a, b) => {
         const studentA = studentsById.get(a.studentId);
         const studentB = studentsById.get(b.studentId);
@@ -514,8 +514,8 @@ export function LiveEnrollments() {
                     }}
                 >
                     <option value="">{t('Todos los cursos')}</option>
-                    {courses.items.slice().sort((a, b) => a.name.localeCompare(b.name, 'es')).map(course =>
-                        <option key={course.id} value={course.id}>{course.name}</option>
+                    {courses.items.slice().sort((a, b) => localizeCourseName(a.name).localeCompare(localizeCourseName(b.name), getActiveLocale())).map(course =>
+                        <option key={course.id} value={course.id}>{localizeCourseName(course.name)}</option>
                     )}
                 </select>
                 <select
@@ -524,10 +524,10 @@ export function LiveEnrollments() {
                     value={enrollmentSort}
                     onChange={event => setEnrollmentSort(event.target.value as typeof enrollmentSort)}
                 >
-                    <option value="name-asc">Nombre: A a Z</option>
-                    <option value="name-desc">Nombre: Z a A</option>
-                    <option value="dni-asc">DNI: menor a mayor</option>
-                    <option value="dni-desc">DNI: mayor a menor</option>
+                    <option value="name-asc">{t('Nombre: A a Z')}</option>
+                    <option value="name-desc">{t('Nombre: Z a A')}</option>
+                    <option value="dni-asc">{t('DNI: menor a mayor')}</option>
+                    <option value="dni-desc">{t('DNI: mayor a menor')}</option>
                 </select>
             </div>
             <LoadState loading={enrollments.loading || students.loading || courses.loading} error={enrollments.error || students.error || courses.error} />
@@ -537,7 +537,7 @@ export function LiveEnrollments() {
                     <th>{t('Estado')}</th><th>{t('Detalle')}</th>
                 </tr></thead><tbody>{filtered.map(item => <tr key={item.id}>
                     <td><strong>{studentsById.get(item.studentId)?.fullName ?? t('Alumno sin ficha')}</strong></td>
-                    <td>{coursesById.get(item.courseId)?.name ?? t('Curso sin ficha')}</td>
+                    <td>{localizeCourseName(coursesById.get(item.courseId)?.name) || t('Curso sin ficha')}</td>
                     <td>{displayDate(item.startDate)}</td>
                     <td><Pill tone={item.status === 'active' ? 'success' : item.status === 'pending_review' ? 'warning' : 'neutral'}>{t(statusText(item.status))}</Pill></td>
                     <td><button type="button" className={Styles.tableLink} onClick={() => setSelectedEnrollmentId(item.id)}><Pencil size={14} aria-hidden="true" />{t('Editar inscripción')}</button></td>
@@ -548,7 +548,7 @@ export function LiveEnrollments() {
         {selectedEnrollment && <Modal title={t('Detalle de inscripción')} subtitle={t('Inscripción académica')} width="wide" onClose={closeEnrollmentDetails}>
             <dl className={Styles.details}>
                 <div className={`${Styles.detailCard} ${Styles.full}`}><dt>{t('Alumno')}</dt><dd>{selectedStudent?.fullName ?? t('Alumno sin ficha')}</dd></div>
-                <div className={`${Styles.detailCard} ${Styles.full}`}><dt>{t('Curso')}</dt><dd>{selectedCourse?.name ?? t('Curso sin ficha')}</dd></div>
+                <div className={`${Styles.detailCard} ${Styles.full}`}><dt>{t('Curso')}</dt><dd>{localizeCourseName(selectedCourse?.name) || t('Curso sin ficha')}</dd></div>
                 {([
                     { field: 'startDate', label: t('Fecha de inicio'), value: selectedEnrollment.startDate ?? '', display: displayDate(selectedEnrollment.startDate), type: 'date' },
                     { field: 'status', label: t('Estado'), value: selectedEnrollment.status, display: t(statusText(selectedEnrollment.status)), options: [
@@ -565,8 +565,8 @@ export function LiveEnrollments() {
                                 {detail.options ?
                                     <select aria-label={detail.label} value={enrollmentFieldValue} disabled={savingEnrollmentField} onChange={event => setEnrollmentFieldValue(event.target.value)}>
                                         {detail.field === 'status' && !detail.options.some(option => option.value === enrollmentFieldValue) &&
-                                            <option value={enrollmentFieldValue} disabled>Seleccioná un estado</option>}
-                                        {detail.options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+                                            <option value={enrollmentFieldValue} disabled>{t('Seleccioná un estado')}</option>}
+                                        {detail.options.map(option => <option key={option.value} value={option.value}>{t(option.label)}</option>)}
                                     </select> :
                                     <input aria-label={detail.label} type={detail.type || 'text'} value={enrollmentFieldValue} disabled={savingEnrollmentField}
                                         onChange={event => setEnrollmentFieldValue(event.target.value)}
@@ -575,15 +575,15 @@ export function LiveEnrollments() {
                                             if (event.key === 'Escape') setEditingEnrollmentField(null);
                                         }} autoFocus />}
                                 <span className={Styles.detailEditActions}>
-                                    <button type="button" className={Styles.detailSave} disabled={savingEnrollmentField} onClick={() => void saveEnrollmentField()}>{savingEnrollmentField ? 'Guardando…' : 'Guardar'}</button>
-                                    <button type="button" className={Styles.detailCancel} disabled={savingEnrollmentField} onClick={() => setEditingEnrollmentField(null)}>Cancelar</button>
+                                    <button type="button" className={Styles.detailSave} disabled={savingEnrollmentField} onClick={() => void saveEnrollmentField()}>{t(savingEnrollmentField ? 'Guardando…' : 'Guardar')}</button>
+                                    <button type="button" className={Styles.detailCancel} disabled={savingEnrollmentField} onClick={() => setEditingEnrollmentField(null)}>{t('Cancelar')}</button>
                                 </span>
                             </dd> :
                             <dd className={Styles.detailRead}>
                                 <span>{detail.display}</span>
                                 {selectedEnrollment.status !== 'transferred' &&
                                     <button type="button" className={Styles.detailEditButton} onClick={() => startEnrollmentFieldEdit(detail.field, detail.value)}>
-                                        <Pencil size={14} aria-hidden="true" />Editar {detail.label}
+                                        <Pencil size={14} aria-hidden="true" />{t('Editar')} {detail.label}
                                     </button>}
                             </dd>}
                     </div>
@@ -593,12 +593,12 @@ export function LiveEnrollments() {
                     <dd>{[
                         ...new Set(enrollments.items
                             .filter(item => item.studentId === selectedEnrollment.studentId && item.status !== 'transferred')
-                            .map(item => coursesById.get(item.courseId)?.name)
+                            .map(item => localizeCourseName(coursesById.get(item.courseId)?.name))
                             .filter((name): name is string => Boolean(name)))
                     ].join(' / ') || t('Sin inscripciones')}</dd>
                 </div>
-                {nextEnrollment && <div className={`${Styles.detailCard} ${Styles.full}`}><dt>{t('Trasladado a')}</dt><dd>{coursesById.get(nextEnrollment.courseId)?.name ?? '—'}</dd></div>}
-                {previousEnrollment && <div className={`${Styles.detailCard} ${Styles.full}`}><dt>{t('Trasladado desde')}</dt><dd>{coursesById.get(previousEnrollment.courseId)?.name ?? '—'}</dd></div>}
+                {nextEnrollment && <div className={`${Styles.detailCard} ${Styles.full}`}><dt>{t('Trasladado a')}</dt><dd>{localizeCourseName(coursesById.get(nextEnrollment.courseId)?.name) || '—'}</dd></div>}
+                {previousEnrollment && <div className={`${Styles.detailCard} ${Styles.full}`}><dt>{t('Trasladado desde')}</dt><dd>{localizeCourseName(coursesById.get(previousEnrollment.courseId)?.name) || '—'}</dd></div>}
                 {selectedEnrollment.transferReason && <div className={`${Styles.detailCard} ${Styles.full}`}><dt>{t('Motivo del traslado')}</dt><dd>{selectedEnrollment.transferReason}</dd></div>}
             </dl>
             {enrollmentFieldError && <p className={Styles.error} role="alert">{enrollmentFieldError}</p>}
