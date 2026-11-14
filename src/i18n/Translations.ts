@@ -2,6 +2,9 @@
 import { PortugueseTranslations } from './Portuguese';
 export type Locale = 'es' | 'en' | 'pt-BR';
 const EnglishTranslations: Record<string, string> = {
+    "Para editar el curso, la fecha de inscripción o el estado académico, utilizá la sección ": "To edit the course, enrollment start date or academic status, use the ",
+    ". La ficha personal no se duplica al inscribir a un alumno en varios cursos.": ". A student's personal record is not duplicated when enrolled in several courses.",
+    "Los cambios se guardan automáticamente en la base de datos de la academia": "Changes are automatically saved to the academy's database",
     "Completá los datos del alumno. Correo electrónico, nacionalidad y dirección son opcionales.": "Complete the student information. Email, nationality and address are optional.",
     "Nombre completo registrado:": "Recorded full name:",
     "Completá Nombre y Apellido para verificarlo sin perder el nombre importado.": "Complete First name and Last name to verify it without losing the imported name.",
