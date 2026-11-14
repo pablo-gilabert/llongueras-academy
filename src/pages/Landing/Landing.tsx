@@ -116,7 +116,7 @@ export function Landing() {
                     <a href="#metodo" onClick={() => setMenuOpen(false)}>{localized('El método', 'The method')}</a>
                     <a href="#cursos" onClick={() => setMenuOpen(false)}>{localized('Formaciones', 'Training')}</a>
                     <a href="#contacto" onClick={() => setMenuOpen(false)}>{localized('Contacto', 'Contact')}</a>
-                    <div className={Styles.publicLanguage}><DisplayControls /></div>
+                    <div className={Styles.publicLanguage}><DisplayControls variant="public" /></div>
                 </nav>
                 <div className={Styles.headerRight}>
                     <Link className={Styles.portalLink} to="/login">
