@@ -52,6 +52,9 @@ credentials/
 firebase-private.*
 *.rar
 *.7z
+*.zip
+*.tar
+*.tgz
 *.pem
 *.p12
 *.pfx
