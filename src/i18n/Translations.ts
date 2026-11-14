@@ -2,6 +2,8 @@
 import { PortugueseTranslations } from './Portuguese';
 export type Locale = 'es' | 'en' | 'pt-BR';
 const EnglishTranslations: Record<string, string> = {
+    "Sí": "Yes",
+    "No": "No",
     // Academic student and enrollment controls.
     "Los datos personales se muestran únicamente a administradores autenticados.": "Personal information is visible only to authenticated administrators.",
     "Cada alumno tiene una ficha editable por administradores, incluso si le faltan DNI, correo, fechas u otros datos. Para corregir inscripciones, utilizá la sección ": "Administrators can edit each student record even if ID, email, dates or other details are missing. To correct enrollments, go to the ",
