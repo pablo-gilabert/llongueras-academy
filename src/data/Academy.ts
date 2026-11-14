@@ -4,13 +4,13 @@ export interface TrainingOffer {
     id: string;
     title: string;
     titleEn: string;
+    titlePt: string;
     category: 'Carrera' | 'Corte' | 'Color' | 'Especialización';
-    audience: 'Inicial' | 'Profesional' | 'Ambos';
     duration: string | null;
     description: string;
     descriptionEn: string;
+    descriptionPt: string;
     image: string;
-    source: string;
 }
 
 export const ACADEMY_CONTACT = {
@@ -32,104 +32,69 @@ export const SOURCES = {
     hairBrasil: 'https://www.portalin.com.br/cena/llongueras-argentina-ensina-os-segredos-dos-cortes-estilos-comerciais/',
 } as const;
 
-// The school has published these training areas; this is not a live timetable.
-// Only the two-year stylist career has a publicly verified duration.
+// These five course names were supplied by the academy for the first review.
+// Images reuse the academy media already present in /public/media.
+// Curricula, levels, schedules and duration are not assumed without confirmation.
 export const TRAINING: TrainingOffer[] = [
     {
-        id: 'career',
-        title: 'Carrera de Estilista',
-        titleEn: 'Professional Stylist Career',
+        id: 'assistant-hairdressing',
+        title: 'Asistente de peluquería',
+        titleEn: 'Hairdressing Assistant',
+        titlePt: 'Assistente de cabeleireiro',
         category: 'Carrera',
-        audience: 'Inicial',
-        duration: '2 años',
-        description: 'Trayecto profesional anunciado por la academia con formación progresiva y módulos de especialización.',
-        descriptionEn: 'A two-year professional pathway publicly announced by the school, with progressive training and specialist modules.',
-        image: 'study.webp',
-        source: SOURCES.academyUpdates,
-    },
-    {
-        id: 'method',
-        title: 'Método Llongueras: Cortes Programados',
-        titleEn: 'Llongueras Method: Programmed Cuts',
-        category: 'Corte',
-        audience: 'Profesional',
         duration: null,
-        description: 'Perfeccionamiento en particiones, proyecciones y trabajo estructural sobre grandes masas de cabello.',
-        descriptionEn: 'Advanced work with sections, projection and structural cutting techniques using larger sections of hair.',
-        image: 'mentor.webp',
-        source: SOURCES.academyUpdates,
+        description: 'Una propuesta para dar los primeros pasos en el salón, conocer su dinámica y desarrollar habilidades de apoyo al equipo profesional.',
+        descriptionEn: 'An introduction to salon work, its day-to-day environment and the supporting skills used alongside professional stylists.',
+        descriptionPt: 'Uma proposta para dar os primeiros passos no salão, conhecer sua dinâmica e desenvolver habilidades de apoio à equipe profissional.',
+        image: 'classroom.webp',
     },
     {
-        id: 'feminine',
-        title: 'Corte femenino',
+        id: 'professional-career',
+        title: 'Carrera Profesional',
+        titleEn: 'Professional Hairdressing Program',
+        titlePt: 'Formação Profissional em Cabeleireiro',
+        category: 'Carrera',
+        duration: null,
+        description: 'Un recorrido de formación profesional que integra técnicas de peluquería, creatividad y práctica orientada al trabajo en salón.',
+        descriptionEn: 'A professional learning pathway combining hairdressing techniques, creativity and practical salon-oriented experience.',
+        descriptionPt: 'Um percurso de formação profissional que reúne técnicas de cabeleireiro, criatividade e prática voltada ao trabalho em salão.',
+        image: 'group-work.webp',
+    },
+    {
+        id: 'colorimetry',
+        title: 'Colorimetría',
+        titleEn: 'Hair Color Theory',
+        titlePt: 'Colorimetria',
+        category: 'Color',
+        duration: null,
+        description: 'Una introducción a la interpretación de tonos, armonías y fundamentos del color aplicados al trabajo capilar.',
+        descriptionEn: 'An introduction to understanding tones, color harmony and the fundamentals of color as applied to hair.',
+        descriptionPt: 'Uma introdução à interpretação de tons, harmonias e fundamentos da cor aplicados aos cabelos.',
+        image: 'workshop.webp',
+    },
+    {
+        id: 'womens-cutting',
+        title: 'Corte Femenino',
         titleEn: 'Women’s Haircutting',
+        titlePt: 'Corte Feminino',
         category: 'Corte',
-        audience: 'Ambos',
         duration: null,
-        description: 'Módulo de formación técnica en corte femenino, publicado dentro de las propuestas de la academia.',
-        descriptionEn: 'A technical haircutting module listed among the academy’s training areas.',
+        description: 'Exploración del diseño y la técnica del corte femenino, con atención a formas, líneas y estilos para distintas necesidades.',
+        descriptionEn: 'An exploration of women’s haircutting design and techniques, focusing on shapes, lines and styles for different needs.',
+        descriptionPt: 'Uma exploração do design e das técnicas de corte feminino, com atenção a formas, linhas e estilos para diferentes necessidades.',
         image: 'technique.webp',
-        source: SOURCES.academyUpdates,
     },
     {
-        id: 'masculine',
+        id: 'mens-cutting',
         title: 'Corte masculino',
         titleEn: 'Men’s Haircutting',
+        titlePt: 'Corte Masculino',
         category: 'Corte',
-        audience: 'Ambos',
         duration: null,
-        description: 'Práctica y fundamentos del corte masculino, ofrecidos como módulo dentro del recorrido formativo.',
-        descriptionEn: 'Men’s haircutting fundamentals and hands-on practice, announced as a modular training option.',
-        image: 'salon.webp',
-        source: SOURCES.academyUpdates,
-    },
-    {
-        id: 'color-first',
-        title: 'Color inicial',
-        titleEn: 'Color Fundamentals',
-        category: 'Color',
-        audience: 'Inicial',
-        duration: null,
-        description: 'Introducción a los fundamentos del color, anunciada como módulo independiente de formación.',
-        descriptionEn: 'An introduction to hair color fundamentals, listed as a standalone training module.',
-        image: 'creative-session.webp',
-        source: SOURCES.academyUpdates,
-    },
-    {
-        id: 'color-advanced',
-        title: 'Color avanzado',
-        titleEn: 'Advanced Color',
-        category: 'Color',
-        audience: 'Profesional',
-        duration: null,
-        description: 'Módulo de profundización para profesionales que buscan ampliar sus recursos técnicos de color.',
-        descriptionEn: 'A specialist module for professionals developing more advanced color techniques.',
-        image: 'workshop.webp',
-        source: SOURCES.academyUpdates,
-    },
-    {
-        id: 'balayage',
-        title: 'Técnicas de balayage',
-        titleEn: 'Balayage Techniques',
-        category: 'Color',
-        audience: 'Profesional',
-        duration: null,
-        description: 'Capacitaciones especializadas de balayage difundidas en las actividades formativas de 2026.',
-        descriptionEn: 'Specialized balayage sessions featured in the academy’s 2026 training communications.',
-        image: 'group-work.webp',
-        source: SOURCES.academyUpdates,
-    },
-    {
-        id: 'makeup',
-        title: 'Maquillaje',
-        titleEn: 'Makeup',
-        category: 'Especialización',
-        audience: 'Inicial',
-        duration: null,
-        description: 'Área de formación publicada entre los módulos disponibles de la carrera y sus especializaciones.',
-        descriptionEn: 'A training area mentioned among the academy’s career modules and specialization options.',
-        image: 'creative-session.webp',
-        source: SOURCES.academyUpdates,
+        description: 'Acercamiento a las técnicas del corte masculino, sus proporciones, estructuras y terminaciones para diferentes estilos.',
+        descriptionEn: 'An introduction to men’s haircutting techniques, proportions, structure and finishing for a range of styles.',
+        descriptionPt: 'Uma introdução às técnicas de corte masculino, suas proporções, estruturas e acabamentos para diferentes estilos.',
+        image: 'mentor.webp',
     },
 ];
 
