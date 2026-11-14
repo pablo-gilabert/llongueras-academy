@@ -170,7 +170,7 @@
 .promptCard input { box-sizing: border-box; width: 100%; padding: 12px; margin: 15px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--field-bg); color: var(--ink); font: inherit; }
 .promptActions { display: flex; justify-content: center; gap: 12px; }
 .promptActions button { padding: 10px 18px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
-.promptConfirm { background: #2464a3; color: white; }
+.promptConfirm { background: #32795a; color: white; }
 
 /* Keep the late-arrival dialog opaque in both application themes. */
 .promptCard { opacity: 1; isolation: isolate; }
