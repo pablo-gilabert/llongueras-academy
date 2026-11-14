@@ -1,61 +1,48 @@
-/** Spanish-first language and light/dark theme preferences. */
+/** Spanish-first language preferences with a permanent light appearance. */
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { setActiveLocale } from './Translations';
 import type { Locale } from './Translations';
-export type Theme = 'light' | 'dark';
+
 interface PreferencesContextValue {
     locale: Locale;
-    theme: Theme;
     setLocale: (locale: Locale) => void;
-    toggleTheme: () => void;
 }
+
 const PreferencesContext = createContext<PreferencesContextValue | null>(null);
-function getPreference<Key extends 'locale' | 'theme'>(key: Key, fallback: Key extends 'locale' ? Locale : Theme) {
+
+function getSavedLocale(): Locale {
     try {
-        const value = window.localStorage.getItem(`llongueras-academy:${key}`);
-        if (key === 'locale' && (value === 'es' || value === 'en'))
-            return value;
-        if (key === 'theme' && (value === 'light' || value === 'dark'))
-            return value;
-    }
-    catch { /* Private browsing may disallow persistent preferences. */ }
-    return fallback;
+        const saved = window.localStorage.getItem('llongueras-academy:locale');
+        if (saved === 'es' || saved === 'en') return saved;
+    } catch { /* Storage may be unavailable in private browsing. */ }
+    return 'es';
 }
-export function PreferencesProvider({ children }: {
-    children: ReactNode;
-}) {
-    // Restore preferences without depending on a remote account or API.
-    const [locale, updateLocale] = useState<Locale>(() => getPreference('locale', 'es') as Locale);
-    const [theme, updateTheme] = useState<Theme>(() => getPreference('theme', 'light') as Theme);
+
+export function PreferencesProvider({ children }: { children: ReactNode }) {
+    const [locale, setLocale] = useState<Locale>(getSavedLocale);
     setActiveLocale(locale);
-    // Apply native HTML language and a CSS theme selector for all routes.
+
+    // Keep the document and browser controls in light mode for every visitor.
     useEffect(() => {
         document.documentElement.lang = locale;
-        document.title = locale === 'es' ? 'Academia Llongueras | Formación profesional' : 'Academia Llongueras | Professional Education';
+        document.documentElement.dataset.theme = 'light';
+        document.documentElement.style.colorScheme = 'light';
+        document.title = locale === 'es'
+            ? 'Academia Llongueras | Formación profesional'
+            : 'Academia Llongueras | Professional Education';
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#f7f8f5');
         try {
             localStorage.setItem('llongueras-academy:locale', locale);
-        }
-        catch { /* Optional preference persistence. */ }
+            localStorage.removeItem('llongueras-academy:theme');
+        } catch { /* Preference persistence is optional. */ }
     }, [locale]);
-    useEffect(() => {
-        document.documentElement.dataset.theme = theme;
-        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#172322' : '#f7f8f5');
-        try {
-            localStorage.setItem('llongueras-academy:theme', theme);
-        }
-        catch { /* Optional preference persistence. */ }
-    }, [theme]);
-    return <PreferencesContext.Provider value={{
-        locale,
-        theme,
-        setLocale: updateLocale,
-        toggleTheme: () => updateTheme(current => current === 'light' ? 'dark' : 'light'),
-    }}>{children}</PreferencesContext.Provider>;
+
+    return <PreferencesContext.Provider value={{ locale, setLocale }}>{children}</PreferencesContext.Provider>;
 }
+
 export function usePreferences(): PreferencesContextValue {
     const context = useContext(PreferencesContext);
-    if (!context)
-        throw new Error('PreferencesProvider is missing');
+    if (!context) throw new Error('PreferencesProvider is missing');
     return context;
 }
