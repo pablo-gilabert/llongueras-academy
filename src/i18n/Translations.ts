@@ -4,6 +4,12 @@ export type Locale = 'es' | 'en' | 'pt-BR';
 const EnglishTranslations: Record<string, string> = {
     "Sí": "Yes",
     "No": "No",
+    "Información académica de acceso restringido.": "Restricted academic information.",
+    "inscripciones registradas": "recorded enrollments",
+    "Podés editar el nombre, la descripción opcional y los demás datos de cada curso. Se conserva su ID y no se alteran las inscripciones existentes. Las materias y comisiones se gestionan por separado.": "You can edit the name, optional description and other details of each course. Its ID is preserved and existing enrollments remain unchanged. Subjects and groups are managed separately.",
+    "Cantidad de alumnos": "Student count",
+    "inscripciones": "enrollments",
+    "Todavía no hay alumnos vinculados a este curso.": "No students have been linked to this course yet.",
     // Academic student and enrollment controls.
     "Los datos personales se muestran únicamente a administradores autenticados.": "Personal information is visible only to authenticated administrators.",
     "Cada alumno tiene una ficha editable por administradores, incluso si le faltan DNI, correo, fechas u otros datos. Para corregir inscripciones, utilizá la sección ": "Administrators can edit each student record even if ID, email, dates or other details are missing. To correct enrollments, go to the ",
