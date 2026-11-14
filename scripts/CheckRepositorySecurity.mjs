@@ -18,7 +18,9 @@ const checkedExtensions = new Set(['.js', '.mjs', '.cjs', '.ts', '.tsx', '.json'
 const violations = [];
 
 for (const file of tracked) {
-    if (sensitivePaths.some(pattern => pattern.test(file))) {
+    // Git can force-add ignored environment files: block that escape hatch too.
+    const isPrivateEnv = /(?:^|\\/)\\.env(?:\\.[^/]+)?$/i.test(file) && !/\\.example$/i.test(file);
+    if (isPrivateEnv || sensitivePaths.some(pattern => pattern.test(file))) {
         violations.push(`Sensitive tracked path: ${file}`);
         continue;
     }
