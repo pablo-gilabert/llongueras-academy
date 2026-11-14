@@ -5,7 +5,6 @@ import {
     ArrowDown,
     ArrowRight,
     ArrowUpRight,
-    BookOpen,
     Check,
     Clock3,
     GraduationCap,
@@ -81,7 +80,6 @@ export function Landing() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('Todas');
-    const [audience, setAudience] = useState('Todos');
     const [expanded, setExpanded] = useState<string | null>(null);
 
     const categories = useMemo(() => ['Todas', ...new Set(TRAINING.map(course => course.category))], []);
@@ -91,16 +89,18 @@ export function Landing() {
         : t(value);
 
     const filteredCourses = TRAINING.filter(course => {
-        const searchableText = normalizeSearch(`${course.title} ${course.titleEn} ${course.description} ${course.category}`);
+        const searchableText = normalizeSearch([
+            course.title, course.titleEn, course.titlePt,
+            course.description, course.descriptionEn, course.descriptionPt,
+            course.category, categoryLabel(course.category),
+        ].join(' '));
         return searchableText.includes(query)
-            && (category === 'Todas' || course.category === category)
-            && (audience === 'Todos' || course.audience === 'Ambos' || course.audience === audience);
+            && (category === 'Todas' || course.category === category);
     });
 
     const clearFilters = () => {
         setSearch('');
         setCategory('Todas');
-        setAudience('Todos');
     };
 
     return (
@@ -300,13 +300,17 @@ export function Landing() {
                     <p className={Styles.regionNote}>{localized('Los hitos europeos corresponden a la marca internacional. Los antecedentes en Brasil describen actividades y representación educativa, no una sede propia actualmente confirmada.', 'European milestones describe the international brand; the Brazil references describe historical activities and educational representation, not a verified active campus there.')}</p>
                 </section>
 
-                {/* Public training data is sourced separately from the role-based campus fixtures. */}
+                {/* Academy-provided course names are displayed separately from private Firestore records. */}
                 <section className={Styles.catalog} id="cursos">
                     <div className={Styles.catalogHeader}>
                         <div>
-                            <span className={Styles.sectionEyebrow}>06 / {localized('FORMACIONES PUBLICADAS', 'PUBLISHED TRAINING AREAS')}</span>
+                            <span className={Styles.sectionEyebrow}>06 / {english ? 'ACADEMY PROGRAMS' : portuguese ? 'FORMAÇÕES DA ACADEMIA' : 'FORMACIONES DE LA ACADEMIA'}</span>
                             <h2>{english ? <>Build your <em>next chapter.</em></> : portuguese ? <>Escolha seu <em>próximo passo.</em></> : <>Elegí tu <em>próximo paso.</em></>}</h2>
-                            <p>{localized('Explorá carreras, módulos y especializaciones difundidos por la academia. Consultá directamente las fechas, los aranceles y la disponibilidad vigente.', 'Explore programs and specialist topics featured in the academy’s public communications. Confirm current dates, tuition and availability directly with the school.')}</p>
+                            <p>{english
+                                ? 'Discover Academia Llongueras training programs. Contact the academic team to confirm course details, dates and available study formats.'
+                                : portuguese
+                                    ? 'Conheça as formações da Academia Llongueras. Consulte a equipe acadêmica para confirmar conteúdos, datas e modalidades disponíveis.'
+                                    : 'Conocé las formaciones de Academia Llongueras. Consultá con el equipo académico los contenidos, las fechas y las modalidades disponibles.'}</p>
                         </div>
                         <span className={Styles.catalogCount}>
                             {String(filteredCourses.length).padStart(2, '0')} / {String(TRAINING.length).padStart(2, '0')}
@@ -331,30 +335,24 @@ export function Landing() {
                                 </option>)}
                             </select>
                         </label>
-                        <label>
-                            <span>{localized('Perfil', 'Audience')}</span>
-                            <select value={audience} onChange={event => setAudience(event.target.value)}>
-                                <option value="Todos">{localized('Todos los niveles', 'All levels')}</option>
-                                <option value="Inicial">{localized('Inicial', 'Beginners')}</option>
-                                <option value="Profesional">{localized('Profesionales', 'Professionals')}</option>
-                            </select>
-                        </label>
                     </div>
                     <div className={Styles.courseGrid}>
                         {filteredCourses.map(course => {
                             const isExpanded = expanded === course.id;
                             return <article key={course.id} className={Styles.courseCard}>
                                 <div className={Styles.courseImage}>
-                                    <img src={`${MEDIA_PATH}${course.image}`} alt={english ? course.titleEn : t(course.title)} loading="lazy" />
-                                    <span>{categoryLabel(course.category)}</span>
+                                    <img src={`${MEDIA_PATH}${course.image}`} alt={english ? course.titleEn : portuguese ? course.titlePt : course.title} loading="lazy" />
                                 </div>
                                 <div className={Styles.courseBody}>
                                     <div className={Styles.courseMeta}>
-                                        <span><BookOpen size={14} />{course.audience === 'Inicial' ? (localized('Inicial', 'Beginners')) : course.audience === 'Profesional' ? (localized('Profesional', 'Professionals')) : (localized('Todos los niveles', 'All levels'))}</span>
-                                        <span><Clock3 size={14} />{english ? (course.duration ?? 'Ask for details') : t(course.duration ?? 'A consultar')}</span>
+                                        <span><Clock3 size={14} />{english
+                                            ? (course.duration ?? 'Duration to be confirmed')
+                                            : portuguese
+                                                ? (course.duration ?? 'Duração a confirmar')
+                                                : (course.duration ?? 'Duración a confirmar')}</span>
                                     </div>
-                                    <h3>{english ? course.titleEn : t(course.title)}</h3>
-                                    <p>{english ? course.descriptionEn : t(course.description)}</p>
+                                    <h3>{english ? course.titleEn : portuguese ? course.titlePt : course.title}</h3>
+                                    <p>{english ? course.descriptionEn : portuguese ? course.descriptionPt : course.description}</p>
                                     <button
                                         type="button"
                                         className={Styles.moreButton}
@@ -365,8 +363,11 @@ export function Landing() {
                                         <ArrowUpRight size={17} />
                                     </button>
                                     {isExpanded && <div className={Styles.courseDetails}>
-                                        <p>{localized('Esta formación aparece en comunicaciones públicas de la academia. Las inscripciones, fechas y aranceles actuales se consultan directamente.', 'This training area has appeared in public communications from the academy. Current enrolment, schedules and fees require confirmation.')}</p>
-                                        <a href={course.source} target="_blank" rel="noopener noreferrer">{localized('Publicación de referencia', 'Published information')} <ArrowUpRight size={15} /></a>
+                                        <p>{english
+                                            ? 'Details about course content, duration, schedules and fees are subject to confirmation by the academy.'
+                                            : portuguese
+                                                ? 'Os detalhes sobre conteúdos, duração, horários e valores devem ser confirmados pela academia.'
+                                                : 'Los detalles sobre contenidos, duración, horarios y aranceles deberán confirmarse con la academia.'}</p>
                                         <a href={ACADEMY_CONTACT.whatsapp} target="_blank" rel="noopener noreferrer">{localized('Consultar a la academia', 'Ask the academy')} <ArrowUpRight size={15} /></a>
                                     </div>}
                                 </div>
