@@ -135,7 +135,7 @@ export function Login() {
                 </p>
             </div>
             <div className={Styles.loginFooter}>
-                {t('Ingresá con tu cuenta institucional. Los administradores gestionan cursos, alumnos e inscripciones; otras secciones incluyen información ilustrativa.')}
+                {t('Ingresá con tu cuenta institucional. Los administradores gestionan la información académica; los docentes consultan únicamente los cursos que tienen asignados.')}
             </div>
         </main>
     </div>;
