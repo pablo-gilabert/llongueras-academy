@@ -32,7 +32,7 @@
     height: 41px;
     display: grid;
     place-items: center;
-    background: #303d3c;
+    background: #30363b;
     color: var(--sand);
     border-radius: 13px;
 }
@@ -144,7 +144,7 @@
 }
 
 .helpCard {
-    background: #303d3d;
+    background: #30363b;
     color: var(--on-dark);
     border-radius: 14px;
     padding: 18px;
@@ -372,9 +372,9 @@
     font-weight: 700;
 }
 
-/* Developer credit link uses accessible green in the light interface. */
+/* Developer credit uses the shared warm-bronze accent. */
 .developerLink {
-    color: #2d7057;
+    color: var(--bronze-dark);
     font-weight: 800;
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -383,7 +383,7 @@
 
 .developerLink:hover,
 .developerLink:focus-visible {
-    color: #20543f;
+    color: #5d4233;
 }
 
 .menuToggle, .mobileClose {
@@ -436,9 +436,9 @@
         background: #101b1b88;
     }
 
-    /* Developer credit link uses accessible green in the light interface. */
+    /* Developer credit uses the shared warm-bronze accent. */
 .developerLink {
-    color: #2d7057;
+    color: var(--bronze-dark);
     font-weight: 800;
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -447,7 +447,7 @@
 
 .developerLink:hover,
 .developerLink:focus-visible {
-    color: #20543f;
+    color: #5d4233;
 }
 
 .menuToggle, .mobileClose {
