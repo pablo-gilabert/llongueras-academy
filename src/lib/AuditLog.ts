@@ -36,6 +36,7 @@ export async function prepareAuditEntry(
     if (!user) throw new Error('Necesitás iniciar sesión para guardar el registro.');
     const result = await user.getIdTokenResult();
     if (result.claims.role !== 'admin') return null;
+    // Exclusions are trusted server-issued claims; client profile fields cannot silence audits.
     if (result.claims.auditExcluded === true) return null;
 
     return {
