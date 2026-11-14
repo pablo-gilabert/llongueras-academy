@@ -150,6 +150,7 @@ export async function saveStudent(input: StudentDraft, existingId?: string): Pro
     // Preserve missing historical values without blocking unrelated corrections.
     // Every newly created profile must include all six required fields.
     const prior = existing?.exists() ? existing.data() : null;
+    // Allow legacy missing fields only when they predate this edit; new records remain strict.
     const fields = studentFields(input, {
         dni: Boolean(prior && !prior.dni),
         names: Boolean(prior && (!prior.firstName || !prior.lastName)),
