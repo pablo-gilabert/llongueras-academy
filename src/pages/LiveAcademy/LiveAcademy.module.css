@@ -140,6 +140,10 @@
 }
 
 .tableLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     border: 0;
     background: transparent;
     color: var(--bronze-dark);
@@ -818,11 +822,11 @@
     overflow-wrap: anywhere;
 }
 
-.enrollmentsTable :global(.dataTable th:nth-child(1)) { width: 28%; }
-.enrollmentsTable :global(.dataTable th:nth-child(2)) { width: 25%; }
-.enrollmentsTable :global(.dataTable th:nth-child(3)) { width: 19%; }
-.enrollmentsTable :global(.dataTable th:nth-child(4)) { width: 17%; }
-.enrollmentsTable :global(.dataTable th:nth-child(5)) { width: 11%; }
+.enrollmentsTable :global(.dataTable th:nth-child(1)) { width: 26%; }
+.enrollmentsTable :global(.dataTable th:nth-child(2)) { width: 24%; }
+.enrollmentsTable :global(.dataTable th:nth-child(3)) { width: 18%; }
+.enrollmentsTable :global(.dataTable th:nth-child(4)) { width: 14%; }
+.enrollmentsTable :global(.dataTable th:nth-child(5)) { width: 18%; }
 
 @media (max-width: 760px) {
     .enrollmentsTable :global(.dataTable) {

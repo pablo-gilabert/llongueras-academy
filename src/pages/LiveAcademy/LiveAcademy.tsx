@@ -540,7 +540,7 @@ export function LiveEnrollments() {
                     <td>{coursesById.get(item.courseId)?.name ?? t('Curso sin ficha')}</td>
                     <td>{displayDate(item.startDate)}</td>
                     <td><Pill tone={item.status === 'active' ? 'success' : item.status === 'pending_review' ? 'warning' : 'neutral'}>{t(statusText(item.status))}</Pill></td>
-                    <td><button type="button" className={Styles.tableLink} onClick={() => setSelectedEnrollmentId(item.id)}>{t('Detalle')}</button></td>
+                    <td><button type="button" className={Styles.tableLink} onClick={() => setSelectedEnrollmentId(item.id)}><Pencil size={14} aria-hidden="true" />{t('Editar inscripción')}</button></td>
                 </tr>)}</tbody></table>
                 {!filtered.length && <EmptyState title={t('Sin inscripciones')} message={t('No hay inscripciones para ese filtro.')} />}
             </div>}
