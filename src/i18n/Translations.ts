@@ -2,6 +2,7 @@
 import { PortugueseTranslations } from './Portuguese';
 export type Locale = 'es' | 'en' | 'pt-BR';
 const EnglishTranslations: Record<string, string> = {
+    "Módulo en construcción": "Module under construction",
     "Sí": "Yes",
     "No": "No",
     "Información académica de acceso restringido.": "Restricted academic information.",
