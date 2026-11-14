@@ -145,7 +145,7 @@ export function LiveCourses() {
                             </Link>
                             <button
                                 type="button"
-                                className={Styles.secondaryButton}
+                                className={`${Styles.secondaryButton} academyWriteAction`}
                                 disabled={courses.loading || Boolean(courses.error) || enrollments.loading || Boolean(enrollments.error)}
                                 onClick={() => setEditingCourseId(course.id)}
                             >
@@ -607,7 +607,7 @@ export function LiveEnrollments() {
             {enrollmentFieldError && <p className={Styles.error} role="alert">{enrollmentFieldError}</p>}
             {selectedEnrollment.status !== 'transferred' && !['completed', 'withdrawn'].includes(selectedEnrollment.status) &&
                 <div className={Styles.formActions}>
-                    <button type="button" className={Styles.secondaryButton} onClick={() => {
+                    <button type="button" className={`${Styles.secondaryButton} academyWriteAction`} onClick={() => {
                         setTransferringEnrollmentId(selectedEnrollment.id);
                         closeEnrollmentDetails();
                     }}>{t('Cambiar de curso')}</button>
