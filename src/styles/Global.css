@@ -9,24 +9,24 @@
     -webkit-font-smoothing: antialiased;
     color-scheme: light;
 
-    --bg: #f7f8f5;
+    --bg: #f8f7f5;
     --card: #ffffff;
-    --surface-soft: #f1f4ef;
-    --surface-hover: #e9efea;
+    --surface-soft: #f2f0ed;
+    --surface-hover: #eae6e1;
     --field-bg: #ffffff;
-    --ink: #263a34;
-    --text-mid: #50665c;
-    --muted: #65786e;
-    --line: #dbe3dc;
-    --bronze: #4c9275;
-    --bronze-dark: #2d7057;
-    --sand: #e8c79f;
+    --ink: #293138;
+    --text-mid: #4b555d;
+    --muted: #68727b;
+    --line: #e0dfda;
+    --bronze: #9b785d;
+    --bronze-dark: #74533e;
+    --sand: #e6c8a4;
     --on-dark: #ffffff;
-    --focus-ring: #398767;
-    --shadow: #17232220;
-    --action-bg: #263a34;
+    --focus-ring: #8b694f;
+    --shadow: #252b301c;
+    --action-bg: #2f373e;
     --action-fg: #ffffff;
-    --action-hover: #3e5950;
+    --action-hover: #47535c;
     --success-text: #237247;
     --error-text: #a33736;
 }
@@ -302,7 +302,7 @@ a {
     display: block;
     height: 100%;
     border-radius: 20px;
-    background: #89ab98;
+    background: var(--bronze);
 }
 
 .listStack {
