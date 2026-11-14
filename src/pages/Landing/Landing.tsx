@@ -5,7 +5,6 @@ import {
     ArrowDown,
     ArrowRight,
     ArrowUpRight,
-    Check,
     Clock3,
     GraduationCap,
     MapPin,
@@ -236,7 +235,11 @@ export function Landing() {
                         </a>
                     </div>
                     <div className={Styles.founderImage}>
-                        <img src={`${MEDIA_PATH}banner.webp`} loading="lazy" alt={localized('Imagen editorial de la marca Llongueras', 'Llongueras brand editorial hairstyle')} />
+                        <img src={`${MEDIA_PATH}seminar.webp`} loading="lazy" alt={english
+                            ? 'A professional hairdressing seminar at Academia Llongueras'
+                            : locale === 'pt-BR'
+                                ? 'Seminário de formação profissional na Academia Llongueras'
+                                : 'Seminario de formación profesional en Academia Llongueras'} />
                     </div>
                 </section>
 
@@ -435,7 +438,6 @@ export function Landing() {
                     <Link to="/login" className={Styles.primaryButton}>
                         {localized('Conocer el campus', 'Explore the campus')} <ArrowRight size={18} />
                     </Link>
-                    <span className={Styles.campusCaveat}><Check size={14} />{localized('Algunas secciones del campus contienen información ilustrativa.', 'Some campus sections contain illustrative information.')}</span>
                 </section>
             </main>
 
