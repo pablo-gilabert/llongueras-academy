@@ -14,7 +14,7 @@ const PreferencesContext = createContext<PreferencesContextValue | null>(null);
 function getSavedLocale(): Locale {
     try {
         const saved = window.localStorage.getItem('llongueras-academy:locale');
-        if (saved === 'es' || saved === 'en') return saved;
+        if (saved === 'es' || saved === 'en' || saved === 'pt-BR') return saved;
     } catch { /* Storage may be unavailable in private browsing. */ }
     return 'es';
 }
@@ -30,7 +30,9 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
         document.documentElement.style.colorScheme = 'light';
         document.title = locale === 'es'
             ? 'Academia Llongueras | Formación profesional'
-            : 'Academia Llongueras | Professional Education';
+            : locale === 'pt-BR'
+                ? 'Academia Llongueras | Formação profissional'
+                : 'Academia Llongueras | Professional Education';
         document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#f7f8f5');
         try {
             localStorage.setItem('llongueras-academy:locale', locale);
