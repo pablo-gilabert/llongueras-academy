@@ -2,6 +2,10 @@
 import { PublicPortugueseTranslations } from './PortuguesePublic';
 
 export const PortugueseTranslations: Record<string, string> = {
+    "Cambios guardados con éxito": "Alterações salvas com sucesso",
+    "Solicitud enviada con éxito": "Solicitação enviada com sucesso",
+    "Cursos en los que está inscripto": "Cursos em que está matriculado",
+    "Nacionalidad": "Nacionalidade",
     "Para editar el curso, la fecha de inscripción o el estado académico, utilizá la sección ": "Para editar o curso, a data de matrícula ou a situação acadêmica, use a seção ",
     ". La ficha personal no se duplica al inscribir a un alumno en varios cursos.": ". O cadastro pessoal não é duplicado ao matricular um aluno em vários cursos.",
     "Los cambios se guardan automáticamente en la base de datos de la academia": "As alterações são salvas automaticamente no banco de dados da academia",

@@ -10,7 +10,7 @@ import { auth, db } from '../../lib/Firebase';
 import { roleLabel } from '../../lib/Utils';
 import { t } from '../../i18n/Translations';
 import { Avatar, Button, Notice, PageTitle, Panel, TextInput } from '../../components/Common/Common';
-import { confirmChange } from '../../lib/ConfirmAction';
+import { confirmChange, showSavedSuccess } from '../../lib/ConfirmAction';
 import Styles from './Profile.module.css';
 
 type NoticeState = { message: string; tone: 'success' | 'warning' } | null;
@@ -160,6 +160,7 @@ export function Profile() {
             await updateProfile(firebaseUser, { displayName: `${first} ${last}` });
             await refreshAccount();
             setProfileNotice({ tone: 'success', message: 'Tus datos personales se guardaron correctamente.' });
+            showSavedSuccess();
         }
         catch (error) {
             setProfileNotice({ tone: 'warning', message: describeError(error) });
@@ -193,6 +194,7 @@ export function Profile() {
             await verifyBeforeUpdateEmail(firebaseUser, email);
             setEmailPassword('');
             setEmailNotice({ tone: 'success', message: 'Te enviamos un enlace de verificación al correo nuevo. El correo de acceso cambiará cuando lo confirmes.' });
+            showSavedSuccess('verification');
         }
         catch (error) {
             setEmailNotice({ tone: 'warning', message: describeError(error) });
@@ -231,6 +233,7 @@ export function Profile() {
             setNewPassword('');
             setPasswordConfirmation('');
             setPasswordNotice({ tone: 'success', message: 'Tu contraseña de acceso se actualizó correctamente.' });
+            showSavedSuccess();
         }
         catch (error) {
             setPasswordNotice({ tone: 'warning', message: describeError(error) });

@@ -10,7 +10,7 @@ import { saveLiveAttendance } from '../../lib/AttendanceMutations';
 import type { LiveAttendanceStatus, AttendanceChange } from '../../lib/AttendanceMutations';
 import { db } from '../../lib/Firebase';
 import { isoDay } from '../../lib/Utils';
-import { confirmChange } from '../../lib/ConfirmAction';
+import { confirmChange, showSavedSuccess } from '../../lib/ConfirmAction';
 import Styles from './LiveAttendance.module.css';
 
 interface SavedAttendance {
@@ -196,6 +196,7 @@ export function LiveAttendance() {
         try {
             await saveLiveAttendance({ courseId: enrollment.courseId, date, changes: [change] });
             setSuccessId(enrollment.id);
+            showSavedSuccess();
         } catch (reason) {
             setSaveError(friendlyError(reason));
         } finally {

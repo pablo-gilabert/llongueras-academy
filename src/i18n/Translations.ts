@@ -2,6 +2,10 @@
 import { PortugueseTranslations } from './Portuguese';
 export type Locale = 'es' | 'en' | 'pt-BR';
 const EnglishTranslations: Record<string, string> = {
+    "Cambios guardados con éxito": "Changes saved successfully",
+    "Solicitud enviada con éxito": "Request sent successfully",
+    "Cursos en los que está inscripto": "Courses the student is enrolled in",
+    "Nacionalidad": "Nationality",
     "Para editar el curso, la fecha de inscripción o el estado académico, utilizá la sección ": "To edit the course, enrollment start date or academic status, use the ",
     ". La ficha personal no se duplica al inscribir a un alumno en varios cursos.": ". A student's personal record is not duplicated when enrolled in several courses.",
     "Los cambios se guardan automáticamente en la base de datos de la academia": "Changes are automatically saved to the academy's database",

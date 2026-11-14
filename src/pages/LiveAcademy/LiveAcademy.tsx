@@ -9,7 +9,7 @@ import { EnrollmentEditor, StudentEditor, TransferEditor } from './LiveAcademyFo
 import { getActiveLocale, localizeCourseName, t } from '../../i18n/Translations';
 import { saveStudent, studentDraft, updateEnrollment, writeError } from '../../lib/AcademyMutations';
 import type { StudentDraft, EnrollmentDraft, AcademicStatus } from '../../lib/AcademyMutations';
-import { confirmChange } from '../../lib/ConfirmAction';
+import { confirmChange, showSavedSuccess } from '../../lib/ConfirmAction';
 import Styles from './LiveAcademy.module.css';
 
 export function DataMode() {
@@ -225,6 +225,7 @@ export function LiveStudents() {
         try {
             await saveStudent(nextDraft, selectedStudent.id);
             setEditingDetail(null);
+            showSavedSuccess();
         } catch (reason) {
             setDetailError(writeError(reason));
         } finally {
@@ -335,7 +336,7 @@ export function LiveStudents() {
                 {([
                     { field: 'dni', label: 'DNI', value: selectedStudent.dni ?? '', display: selectedStudent.dni || '—' },
                     { field: 'birthDate', label: t('Fecha de nacimiento'), value: selectedStudent.birthDate ?? '', display: displayDate(selectedStudent.birthDate), type: 'date' },
-                    { field: 'nationalityCode', label: t('Nacionalidad (código)'), value: selectedStudent.nationalityCode ?? '', display: selectedStudent.nationalityCode || '—' },
+                    { field: 'nationalityCode', label: t('Nacionalidad'), value: selectedStudent.nationalityCode ?? '', display: selectedStudent.nationalityCode || '—' },
                     { field: 'birthPlace', label: t('Lugar de nacimiento'), value: selectedStudent.birthPlace ?? '', display: selectedStudent.birthPlace || t('A confirmar') },
                     { field: 'phone', label: t('Teléfono'), value: selectedStudent.phone ?? '', display: selectedStudent.phone || '—' },
                     { field: 'email', label: t('Correo electrónico'), value: selectedStudent.email ?? '', display: selectedStudent.email || '—', type: 'email' },
@@ -374,7 +375,7 @@ export function LiveStudents() {
                     </div>
                 )}
                 <div className={`${Styles.detailCard} ${Styles.full}`}>
-                    <dt>{t('Cursos en los que está inscrito')}</dt>
+                    <dt>{t('Cursos en los que está inscripto')}</dt>
                     <dd>{enrollments.loading ? '…' : enrollments.error ? '—' : [...new Set(selectedEnrollments.map(enrollment => localizeCourseName(coursesById.get(enrollment.courseId)?.name) || t('Curso sin ficha')))].join(', ') || t('Sin inscripciones')}</dd>
                 </div>
             </dl>
@@ -445,6 +446,7 @@ export function LiveEnrollments() {
         try {
             await updateEnrollment(selectedEnrollment.id, nextDraft);
             setEditingEnrollmentField(null);
+            showSavedSuccess();
         } catch (reason) {
             setEnrollmentFieldError(writeError(reason));
         } finally {

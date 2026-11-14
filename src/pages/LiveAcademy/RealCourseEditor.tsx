@@ -7,7 +7,7 @@ import { courseDraft, saveRealCourse } from '../../lib/CourseMutations';
 import type { CourseDraft } from '../../lib/CourseMutations';
 import { writeError } from '../../lib/AcademyMutations';
 import { t } from '../../i18n/Translations';
-import { confirmChange } from '../../lib/ConfirmAction';
+import { confirmChange, showSavedSuccess } from '../../lib/ConfirmAction';
 import Styles from './LiveAcademy.module.css';
 
 export function RealCourseEditor({ course, occupied, enrollmentCount, onClose }: {
@@ -37,6 +37,7 @@ export function RealCourseEditor({ course, occupied, enrollmentCount, onClose }:
         try {
             await saveRealCourse(course, form);
             onClose();
+            showSavedSuccess();
         } catch (reason) {
             setError(writeError(reason));
         } finally {

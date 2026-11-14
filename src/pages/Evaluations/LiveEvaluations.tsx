@@ -10,7 +10,7 @@ import { createRealEvaluation, saveRealGrades } from '../../lib/EvaluationMutati
 import type { GradeChange, RealEvaluation, RealGrade } from '../../lib/EvaluationMutations';
 import { db } from '../../lib/Firebase';
 import { isoDay } from '../../lib/Utils';
-import { confirmChange } from '../../lib/ConfirmAction';
+import { confirmChange, showSavedSuccess } from '../../lib/ConfirmAction';
 import Styles from './LiveEvaluations.module.css';
 
 interface DraftGrade {
@@ -212,6 +212,7 @@ export function LiveEvaluations() {
             setMaxScore('10');
             setShowCreate(false);
             setSuccess('La evaluación se creó correctamente.');
+            showSavedSuccess();
         } catch (error) {
             setFormError(readableError(error));
         } finally {
@@ -232,6 +233,7 @@ export function LiveEvaluations() {
         try {
             const count = await saveRealGrades({ evaluation: selected, changes });
             setSuccess(`${count} calificaciones guardadas correctamente.`);
+            if (count > 0) showSavedSuccess();
         } catch (error) {
             setGradeError(readableError(error));
         } finally {
