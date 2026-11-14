@@ -2,6 +2,7 @@
 import { PortugueseTranslations } from './Portuguese';
 export type Locale = 'es' | 'en' | 'pt-BR';
 const EnglishTranslations: Record<string, string> = {
+    "Ingresá con tu cuenta institucional. Los administradores gestionan la información académica; los docentes consultan únicamente los cursos que tienen asignados.": "Sign in with your institutional account. Administrators manage academic information; teachers can only view courses assigned to them.",
     "Cambios guardados con éxito": "Changes saved successfully",
     "Solicitud enviada con éxito": "Request sent successfully",
     "Cursos en los que está inscripto": "Courses the student is enrolled in",
@@ -116,7 +117,6 @@ const EnglishTranslations: Record<string, string> = {
     "Los permisos están protegidos y no se modifican desde este formulario.": "Permissions are protected and cannot be changed here.",
     "Seguridad administrada por Firebase Authentication": "Security managed by Firebase Authentication",
     "Bienvenido a tu espacio de trabajo,": "Welcome to your workspace,",
-    "Consultá los registros reales de la base de dato y todo lo que necesites.": "Browse the academy database records and everything you need.",
     "Resumen académico": "Academic overview",
     // Administrator-only full record editing and optional form fields.
     "Solo administradores: podés editar todos los datos personales de esta ficha. Los campos sin confirmar pueden quedar vacíos; el nombre completo es obligatorio y el DNI solo puede quedar pendiente en fichas que ya se importaron sin él.": "Administrators only: you can edit all personal details on this record. Unverified fields can remain blank; full name is required and the DNI can remain pending only on records imported without it.",
