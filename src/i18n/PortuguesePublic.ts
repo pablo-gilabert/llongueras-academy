@@ -138,5 +138,17 @@ export const PublicPortugueseTranslations: Record<string, string> = {
     "Llegada a Argentina": "Chegada à Argentina",
     "Formación en Hair Brasil": "Formação na Hair Brasil",
     "Academia renovada": "Academia renovada",
-    "Puente con Brasil": "Ponte com o Brasil"
+    "Puente con Brasil": "Ponte com o Brasil",
+    "Todas": "Todas",
+    "Color": "Coloração",
+    "Corte": "Corte",
+    "Especialización": "Especialização",
+    "LLONGUERAS / MÉTODO · ARTE · PROFESIÓN": "LLONGUERAS / MÉTODO · ARTE · PROFISSÃO",
+    "Lluís Llongueras inicia su negocio de peluquería en Barcelona y comienza una trayectoria de innovación artística.": "Lluís Llongueras inicia seu negócio de cabeleireiro em Barcelona e começa uma trajetória de inovação artística.",
+    "Lluís Llongueras abre en España un salón unisex pionero que redefine las convenciones del sector.": "Lluís Llongueras inaugura na Espanha um salão unissex pioneiro que redefine as convenções do setor.",
+    "Tras impulsar su instituto de perfeccionamiento en los años setenta, abre un salón en la rue Saint-Honoré de París.": "Depois de desenvolver seu instituto de aperfeiçoamento nos anos 1970, inaugura um salão na rue Saint-Honoré, em Paris.",
+    "Esteban Tejada impulsa la presencia de la marca en el país y desarrolla su vínculo con la formación profesional.": "Esteban Tejada impulsiona a presença da marca na Argentina e fortalece sua relação com a formação profissional.",
+    "Esteban Tejada participa como embajador de Llongueras en Hair Brasil, impartiendo formación sobre cortes comerciales y Cortes Programados.": "Esteban Tejada participa como embaixador da Llongueras na Hair Brasil, ministrando formação sobre cortes comerciais e Cortes Programados.",
+    "La academia anuncia una nueva etapa en Buenos Aires, dirigida a principiantes y profesionales.": "A academia anuncia uma nova etapa em Buenos Aires, voltada a iniciantes e profissionais.",
+    "La academia presenta a Paloma y Santhiago como embajadores de su propuesta educativa en Brasil.": "A academia apresenta Paloma e Santhiago como embaixadores de sua proposta educacional no Brasil."
 };
