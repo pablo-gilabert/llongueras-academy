@@ -2,6 +2,31 @@
 import { PortugueseTranslations } from './Portuguese';
 export type Locale = 'es' | 'en' | 'pt-BR';
 const EnglishTranslations: Record<string, string> = {
+    // Academic student and enrollment controls.
+    "Los datos personales se muestran únicamente a administradores autenticados.": "Personal information is visible only to authenticated administrators.",
+    "Cada alumno tiene una ficha editable por administradores, incluso si le faltan DNI, correo, fechas u otros datos. Para corregir inscripciones, utilizá la sección ": "Administrators can edit each student record even if ID, email, dates or other details are missing. To correct enrollments, go to the ",
+    "Registros académicos": "Academic records",
+    "Ordenar por": "Sort by",
+    "Nombre: A a Z": "Name: A to Z",
+    "Nombre: Z a A": "Name: Z to A",
+    "DNI: menor a mayor": "ID: ascending",
+    "DNI: mayor a menor": "ID: descending",
+    "Filtrar por estado": "Filter by status",
+    "Filtrar por carrera": "Filter by program",
+    "Todas las carreras": "All programs",
+    "No se pudieron cargar las inscripciones para filtrar por carrera.": "Enrollments could not be loaded to filter by program.",
+    "Email faltante": "Email missing",
+    "DNI Faltante": "ID missing",
+    "Teléfono faltante": "Phone missing",
+    "Sin alumnos": "No students",
+    "A confirmar": "To be confirmed",
+    "INSCRIPCIONES ACADÉMICAS": "ACADEMIC ENROLLMENTS",
+    "Ordenar inscripciones": "Sort enrollments",
+    "Inscripción académica": "Academic enrollment",
+    "Carreras": "Programs",
+    "Cursando": "Studying",
+    "Dado de baja": "Withdrawn",
+    "Seleccioná un estado": "Select a status",
     // Editable self-service account information.
     "Editar mi perfil": "Edit my profile",
     "Actualizá tus datos personales y las credenciales con las que ingresás al campus.": "Update your personal information and the credentials you use to sign in.",
@@ -897,6 +922,85 @@ const EnglishTranslations: Record<string, string> = {
     "Comisión activa": "Active group",
     "Guardar": "Save"
 };
+
+/** Firestore course names are localized only when displayed, never when saved. */
+const CourseTitleTranslations: Record<string, { en: string; 'pt-BR': string }> = {
+    "asistente": { en: "Assistant", 'pt-BR': "Assistente" },
+    "carrera completa": { en: "Complete Program", 'pt-BR': "Formação completa" },
+    "carrera de estilista": { en: "Professional Stylist Program", 'pt-BR': "Formação de estilista" },
+    "estilista internacional": { en: "International Stylist", 'pt-BR': "Estilista internacional" },
+    "corte femenino": { en: "Women's Haircutting", 'pt-BR': "Corte feminino" },
+    "corte masculino": { en: "Men's Haircutting", 'pt-BR': "Corte masculino" },
+    "color inicial": { en: "Color Fundamentals", 'pt-BR': "Fundamentos de coloração" },
+    "color avanzado": { en: "Advanced Color", 'pt-BR': "Coloração avançada" },
+    "ayudante basico de peluqueria": { en: "Basic Hairdressing Assistant", 'pt-BR': "Assistente básico de cabeleireiro" },
+    "ayudante avanzado": { en: "Advanced Assistant", 'pt-BR': "Assistente avançado" },
+    "preestilista en corte": { en: "Junior Haircutting Stylist", 'pt-BR': "Pré-estilista em corte" },
+    "preestilista en coloracion y peinados": { en: "Junior Color and Styling Specialist", 'pt-BR': "Pré-estilista em coloração e penteados" },
+    "metodo llongueras: cortes programados": { en: "Llongueras Method: Programmed Cuts", 'pt-BR': "Método Llongueras: Cortes Programados" },
+    "tecnicas de balayage": { en: "Balayage Techniques", 'pt-BR': "Técnicas de balayage" },
+    "peluqueria": { en: "Hairdressing", 'pt-BR': "Cabeleireiro" },
+    "barberia": { en: "Barbering", 'pt-BR': "Barbearia" },
+    "colorimetria": { en: "Color Theory", 'pt-BR': "Colorimetria" },
+    "maquillaje": { en: "Makeup", 'pt-BR': "Maquiagem" },
+    "carrera de estilista internacional": { en: "International Stylist Program", 'pt-BR': "Formação de estilista internacional" },
+};
+const CourseWordTranslations: Record<string, { en: string; 'pt-BR': string }> = {
+    "asistente": { en: "assistant", 'pt-BR': "assistente" },
+    "auxiliar": { en: "assistant", 'pt-BR': "auxiliar" },
+    "carrera": { en: "program", 'pt-BR': "formação" },
+    "completa": { en: "complete", 'pt-BR': "completa" },
+    "estilista": { en: "stylist", 'pt-BR': "estilista" },
+    "peluqueria": { en: "hairdressing", 'pt-BR': "cabeleireiro" },
+    "barberia": { en: "barbering", 'pt-BR': "barbearia" },
+    "corte": { en: "haircutting", 'pt-BR': "corte" },
+    "cortes": { en: "haircuts", 'pt-BR': "cortes" },
+    "peinado": { en: "hairstyling", 'pt-BR': "penteado" },
+    "peinados": { en: "hairstyles", 'pt-BR': "penteados" },
+    "color": { en: "color", 'pt-BR': "cor" },
+    "colorista": { en: "colorist", 'pt-BR': "colorista" },
+    "coloracion": { en: "coloring", 'pt-BR': "coloração" },
+    "colorimetria": { en: "color theory", 'pt-BR': "colorimetria" },
+    "maquillaje": { en: "makeup", 'pt-BR': "maquiagem" },
+    "ayudante": { en: "assistant", 'pt-BR': "assistente" },
+    "preestilista": { en: "junior stylist", 'pt-BR': "pré-estilista" },
+    "basico": { en: "basic", 'pt-BR': "básico" },
+    "basica": { en: "basic", 'pt-BR': "básica" },
+    "avanzado": { en: "advanced", 'pt-BR': "avançado" },
+    "avanzada": { en: "advanced", 'pt-BR': "avançada" },
+    "inicial": { en: "beginner", 'pt-BR': "inicial" },
+    "profesional": { en: "professional", 'pt-BR': "profissional" },
+    "internacional": { en: "international", 'pt-BR': "internacional" },
+    "tecnicas": { en: "techniques", 'pt-BR': "técnicas" },
+    "tecnica": { en: "technique", 'pt-BR': "técnica" },
+    "tecnico": { en: "technical", 'pt-BR': "técnico" },
+    "especializacion": { en: "specialization", 'pt-BR': "especialização" },
+    "integral": { en: "comprehensive", 'pt-BR': "integral" },
+    "femenino": { en: "women's", 'pt-BR': "feminino" },
+    "masculino": { en: "men's", 'pt-BR': "masculino" },
+    "de": { en: "of", 'pt-BR': "de" },
+    "en": { en: "in", 'pt-BR': "em" },
+    "y": { en: "and", 'pt-BR': "e" },
+};
+function normalizeCourseTitle(value: string): string {
+    return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLocaleLowerCase('es');
+}
+/** Translate known course names, preserving any unknown proper nouns. */
+export function localizeCourseName(name: string | null | undefined): string {
+    if (!name || ActiveLocale === 'es') return name ?? '';
+    const exact = CourseTitleTranslations[normalizeCourseTitle(name)];
+    if (exact) return exact[ActiveLocale];
+    // Translate domain vocabulary in additional course names without altering the source.
+    const tokens = name.match(/\p{L}+|[^\p{L}]+/gu) ?? [];
+    return tokens.map(token => {
+        const replacement = CourseWordTranslations[normalizeCourseTitle(token)]?.[ActiveLocale];
+        if (!replacement) return token;
+        return /^\p{Lu}/u.test(token)
+            ? replacement.charAt(0).toLocaleUpperCase(ActiveLocale) + replacement.slice(1)
+            : replacement;
+    }).join('');
+}
+
 let ActiveLocale: Locale = 'es';
 /** Synchronize the translation helper with the active UI preference. */
 export function getActiveLocale(): Locale { return ActiveLocale; }
