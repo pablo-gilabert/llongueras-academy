@@ -1,4 +1,4 @@
-/** Persistent language and appearance controls. */
+/** Persistent language selector for Spanish, English, and Brazilian Portuguese. */
 import { useEffect, useRef, useState } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 import { usePreferences } from '../../i18n/Preferences';
@@ -15,6 +15,7 @@ interface LanguageOption {
 const Languages: LanguageOption[] = [
     { locale: 'es', flag: '/flags/Spain.svg', label: 'ESP', name: 'Español' },
     { locale: 'en', flag: '/flags/England.svg', label: 'EN', name: 'English' },
+    { locale: 'pt-BR', flag: '/flags/Brazil.svg', label: 'PT', name: 'Português (Brasil)' },
 ];
 
 export function DisplayControls() {

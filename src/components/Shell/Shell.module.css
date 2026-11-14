@@ -372,9 +372,9 @@
     font-weight: 700;
 }
 
-/* Developer credit link uses accessible blue in both interface themes. */
+/* Developer credit link uses accessible green in the light interface. */
 .developerLink {
-    color: #1976d2;
+    color: #2d7057;
     font-weight: 800;
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -383,7 +383,7 @@
 
 .developerLink:hover,
 .developerLink:focus-visible {
-    color: #12509c;
+    color: #20543f;
 }
 
 .menuToggle, .mobileClose {
@@ -436,9 +436,9 @@
         background: #101b1b88;
     }
 
-    /* Developer credit link uses accessible blue in both interface themes. */
+    /* Developer credit link uses accessible green in the light interface. */
 .developerLink {
-    color: #1976d2;
+    color: #2d7057;
     font-weight: 800;
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -447,7 +447,7 @@
 
 .developerLink:hover,
 .developerLink:focus-visible {
-    color: #12509c;
+    color: #20543f;
 }
 
 .menuToggle, .mobileClose {

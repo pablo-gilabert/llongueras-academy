@@ -1575,3 +1575,17 @@
         padding: 20px;
     }
 }
+
+/* Keep locale switching available on both the public page and small screens. */
+.publicLanguage {
+    display: flex;
+    align-items: center;
+    margin-left: 6px;
+}
+
+@media (max-width: 760px) {
+    .publicLanguage {
+        margin: 14px 0 0;
+        align-self: flex-start;
+    }
+}

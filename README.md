@@ -1,6 +1,6 @@
 # Academia Llongueras — Academy Website & Management Portal
 
-A responsive, bilingual academy website and role-based academic management portal built as an independent software-engineering portfolio project. It pairs a public-facing institutional experience with a protected Firebase-backed workspace for academy administrators and teachers.
+A responsive, trilingual academy website and role-based academic management portal built as an independent software-engineering portfolio project. It pairs a public-facing institutional experience with a protected Firebase-backed workspace for academy administrators and teachers.
 
 **Stack:** React 19 · TypeScript · Vite · React Router · Firebase Authentication · Cloud Firestore · CSS Modules · Lucide React
 
@@ -9,7 +9,7 @@ A responsive, bilingual academy website and role-based academic management porta
 
 ## What it does
 
-The **public website** presents the academy's history, educational methodology, areas of study, media gallery, and contact details. It includes responsive navigation, accessible interactions, Spanish-first copy with optional English, and dark/light theme preferences.
+The **public website** presents the academy's history, educational methodology, areas of study, media gallery, and contact details. It includes responsive navigation, accessible interactions, Spanish-first copy with English and Brazilian Portuguese options, and a consistent light theme.
 
 The **authenticated workspace** provides the following implemented functionality:
 

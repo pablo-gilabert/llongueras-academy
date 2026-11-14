@@ -60,7 +60,7 @@ export function Shell() {
 
     const section = (location.pathname.split('/')[2] ?? 'dashboard') as Section;
     const activeTitle = NAV.find(n => n.section === section)?.[user.role === 'student' ? 'studentLabel' : 'label'] ?? PAGE_NAMES[section] ?? 'Plataforma';
-    const homeLabel = locale === 'es' ? 'Volver al inicio' : 'Back to home';
+    const homeLabel = locale === 'es' ? 'Volver al inicio' : locale === 'pt-BR' ? 'Voltar ao início' : 'Back to home';
 
     // All sign-out buttons end the session and return to the public academy landing page.
     const leave = async () => {
@@ -168,7 +168,7 @@ export function Shell() {
                 <footer className={Styles.footer}>
                     <span>© {new Date().getFullYear()} Academia Llongueras</span>
                     <span>
-                        {locale === 'es' ? 'Desarrollado por Pablo Gilabert, fundador de ' : 'Developed by Pablo Gilabert, founder of '}
+                        {locale === 'es' ? 'Desarrollado por Pablo Gilabert, fundador de ' : locale === 'pt-BR' ? 'Desenvolvido por Pablo Gilabert, fundador da ' : 'Developed by Pablo Gilabert, founder of '}
                         <a
                             className={Styles.developerLink}
                             href="https://pg-labs.vercel.app/"

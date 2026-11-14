@@ -62,22 +62,22 @@ export function auditInBatch(batch: WriteBatch, event: PendingEntry | null): voi
 }
 
 /** Format events without ever storing changed DNI, contact data, notes or scores. */
-export function activityDescription(entry: AuditEntry, english: boolean): string {
-    const actionDescriptions: Record<AuditAction, [string, string]> = {
-        'student.created': ['registró la ficha de', 'created a student record for'],
-        'student.updated': ['actualizó datos personales de', 'updated personal details for'],
-        'enrollment.created': ['inscribió a un alumno en', 'enrolled a student in'],
-        'enrollment.updated': ['actualizó una inscripción de', 'updated an enrollment for'],
-        'enrollment.transferred': ['trasladó una inscripción a', 'transferred an enrollment to'],
-        'course.updated': ['actualizó información de la carrera', 'updated information for the course'],
-        'course.renamed': ['modificó el nombre de la carrera', 'renamed the course'],
-        'course.description_updated': ['actualizó la descripción de la carrera', 'updated the course description for'],
-        'teacher.created': ['registró al docente', 'registered the teacher'],
-        'teacher.updated': ['actualizó la ficha del docente', 'updated the teacher record for'],
-        'attendance.saved': ['cargó o corrigió asistencias de', 'recorded or corrected attendance for'],
-        'evaluation.created': ['publicó una evaluación en', 'created an evaluation in'],
-        'grades.saved': ['publicó o corrigió notas de', 'published or corrected grades for'],
+export function activityDescription(entry: AuditEntry, english: boolean, portuguese = false): string {
+    const actionDescriptions: Record<AuditAction, [string, string, string]> = {
+        'student.created': ['registró la ficha de', 'created a student record for', 'registrou o cadastro de'],
+        'student.updated': ['actualizó datos personales de', 'updated personal details for', 'atualizou os dados pessoais de'],
+        'enrollment.created': ['inscribió a un alumno en', 'enrolled a student in', 'matriculou um aluno em'],
+        'enrollment.updated': ['actualizó una inscripción de', 'updated an enrollment for', 'atualizou uma matrícula de'],
+        'enrollment.transferred': ['trasladó una inscripción a', 'transferred an enrollment to', 'transferiu uma matrícula para'],
+        'course.updated': ['actualizó información de la carrera', 'updated information for the course', 'atualizou as informações do curso'],
+        'course.renamed': ['modificó el nombre de la carrera', 'renamed the course', 'alterou o nome do curso'],
+        'course.description_updated': ['actualizó la descripción de la carrera', 'updated the course description for', 'atualizou a descrição do curso'],
+        'teacher.created': ['registró al docente', 'registered the teacher', 'cadastrou o docente'],
+        'teacher.updated': ['actualizó la ficha del docente', 'updated the teacher record for', 'atualizou o cadastro do docente'],
+        'attendance.saved': ['cargó o corrigió asistencias de', 'recorded or corrected attendance for', 'registrou ou corrigiu a frequência de'],
+        'evaluation.created': ['publicó una evaluación en', 'created an evaluation in', 'criou uma avaliação em'],
+        'grades.saved': ['publicó o corrigió notas de', 'published or corrected grades for', 'lançou ou corrigiu notas de'],
     };
-    const [spanish, translated] = actionDescriptions[entry.action];
-    return `${english ? translated : spanish} ${entry.subject}${entry.context ? ` · ${entry.context}` : ''}`;
+    const [spanish, translated, translatedPortuguese] = actionDescriptions[entry.action];
+    return `${portuguese ? translatedPortuguese : english ? translated : spanish} ${entry.subject}${entry.context ? ` · ${entry.context}` : ''}`;
 }
