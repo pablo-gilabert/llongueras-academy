@@ -44,7 +44,7 @@ function LoadState({ loading, error }: { loading: boolean; error: string | null 
     return null;
 }
 
-/** Summarize actual Firestore records; only the monthly balance is illustrative. */
+/** Summarize real Firestore records and clearly flag unfinished modules. */
 export function LiveOverview() {
     const { courses, students, enrollments } = useAcademy();
     return <section aria-label={t('Resumen académico')}>
@@ -54,10 +54,10 @@ export function LiveOverview() {
                 { label: 'La academia ofrece', value: courses.error ? '—' : courses.loading ? '…' : `${courses.items.filter(course => course.active).length} ${t('Carreras')}` },
                 { label: 'Sistema de asistencias', value: 'En construcción' },
                 { label: 'La academia tiene', value: enrollments.error ? '—' : enrollments.loading ? '…' : `${enrollments.items.length} ${t('inscripciones registradas')}` },
-                { label: 'Saldo mensual pendiente (Saldo demostrativo)', value: '$ 1.043.000' },
+                { label: 'Módulo en construcción', value: '' },
             ].map(item => <div className={Styles.summaryFiveCard} key={item.label}>
                 <span>{t(item.label)}</span>
-                <strong>{t(item.value)}</strong>
+                {item.value && <strong>{t(item.value)}</strong>}
             </div>)}
         </div>
         {[courses.error, students.error, enrollments.error].filter(Boolean).map((error, index) =>
