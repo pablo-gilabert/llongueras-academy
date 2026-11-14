@@ -58,3 +58,23 @@ export async function confirmChange(intent: ChangeIntent): Promise<boolean> {
     });
     return result.isConfirmed;
 }
+
+/** Show success only after an awaited write completes, never on confirmation alone. */
+export function showSavedSuccess(kind: 'saved' | 'verification' = 'saved'): void {
+    void Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: t(kind === 'verification' ? 'Solicitud enviada con éxito' : 'Cambios guardados con éxito'),
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: false,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        customClass: {
+            popup: 'academy-success-popup',
+            title: 'academy-success-title',
+        },
+        showClass: { popup: 'academy-confirm-enter' },
+        hideClass: { popup: 'academy-confirm-exit' },
+    });
+}
