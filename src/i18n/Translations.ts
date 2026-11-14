@@ -1,5 +1,6 @@
-/** English UI translations for the Spanish-first application. */
-export type Locale = 'es' | 'en';
+/** English and Brazilian Portuguese UI translations for the Spanish-first application. */
+import { PortugueseTranslations } from './Portuguese';
+export type Locale = 'es' | 'en' | 'pt-BR';
 const EnglishTranslations: Record<string, string> = {
     // Editable self-service account information.
     "Editar mi perfil": "Edit my profile",
@@ -904,17 +905,17 @@ export function setActiveLocale(locale: Locale): void {
 }
 /** Translate display strings while preserving leading and trailing whitespace. */
 export function t<Value>(value: Value): Value {
-    if (ActiveLocale !== 'en' || typeof value !== 'string')
+    if (ActiveLocale === 'es' || typeof value !== 'string')
         return value;
     const leading = value.match(/^\s*/)?.[0] ?? '';
     const trailing = value.match(/\s*$/)?.[0] ?? '';
     const trimmed = value.trim();
     if (!trimmed)
         return value;
-    const translated = EnglishTranslations[trimmed];
+    const translated = (ActiveLocale === 'pt-BR' ? PortugueseTranslations : EnglishTranslations)[trimmed];
     if (translated)
         return `${leading}${translated}${trailing}` as unknown as Value;
-    return translateInterpolated(value) as unknown as Value;
+    return (ActiveLocale === 'pt-BR' ? translatePortugueseInterpolated(value) : translateInterpolated(value)) as unknown as Value;
 }
 /** Translate a small set of interpolated labels rendered by the dashboard. */
 function translateInterpolated(value: string): string {
@@ -936,6 +937,24 @@ function translateInterpolated(value: string): string {
     for (const [pattern, replacement] of patterns) {
         if (pattern.test(value))
             return value.replace(pattern, replacement);
+    }
+    return value;
+}
+
+/** Translate Portuguese labels containing live record counts. */
+function translatePortugueseInterpolated(value: string): string {
+    const patterns: Array<[RegExp, string]> = [
+        [/^(\\d+) registros visibles$/, '$1 registros visíveis'],
+        [/^(\\d+) alumnos inscriptos$/, '$1 alunos matriculados'],
+        [/^(\\d+) alumnos$/, '$1 alunos'],
+        [/^(\\d+) inscripciones$/, '$1 matrículas'],
+        [/^(\\d+) resultados$/, '$1 resultados'],
+        [/^Asistencia de (.+)$/, 'Frequência de $1'],
+        [/^Nota de (.+)$/, 'Nota de $1'],
+        [/^Editar (.+)$/, 'Editar $1'],
+    ];
+    for (const [pattern, replacement] of patterns) {
+        if (pattern.test(value)) return value.replace(pattern, replacement);
     }
     return value;
 }
