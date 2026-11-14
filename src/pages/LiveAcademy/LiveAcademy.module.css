@@ -552,7 +552,7 @@
     outline-offset: 2px;
 }
 
-/* Read-only student action: matches the edit button in a calm blue. */
+/* Read-only student action: matches the edit button in a calm green. */
 .viewStudentButton {
     display: inline-flex;
     align-items: center;
@@ -562,7 +562,7 @@
     border: 1px solid #bed4ed;
     border-radius: 8px;
     background: #edf4fc;
-    color: #285c94;
+    color: #2f7158;
     font: inherit;
     font-size: 12px;
     font-weight: 650;
@@ -572,10 +572,10 @@
 }
 .viewStudentButton:hover {
     background: #dceafa;
-    border-color: #8db5dc;
+    border-color: #a8d6ba;
 }
 .viewStudentButton:focus-visible {
-    outline: 2px solid #285c94;
+    outline: 2px solid #2f7158;
     outline-offset: 2px;
 }
 
@@ -640,7 +640,7 @@
     border: 1px solid #bdd4f2;
     border-radius: 8px;
     background: #edf4ff;
-    color: #245c9b;
+    color: #307459;
     font: inherit;
     font-size: 12px;
     font-weight: 700;
@@ -650,13 +650,13 @@
 
 .detailEditButton:hover {
     background: #dceafe;
-    border-color: #8fb5e8;
+    border-color: #a8d6ba;
 }
 
 .detailEditButton:focus-visible,
 .detailSave:focus-visible,
 .detailCancel:focus-visible {
-    outline: 2px solid #4389d6;
+    outline: 2px solid #4d9675;
     outline-offset: 2px;
 }
 
@@ -695,9 +695,9 @@
 }
 
 .detailSave {
-    background: #245c9b;
+    background: #307459;
     color: white;
-    border-color: #245c9b;
+    border-color: #307459;
 }
 
 .detailCancel {
@@ -773,7 +773,7 @@
     justify-content: center;
     gap: 8px;
     padding: 11px 16px;
-    border: 1px solid #93b8e8;
+    border: 1px solid #abd6bb;
     border-radius: 10px;
     background: #dceafe;
     color: #246343;
@@ -785,13 +785,13 @@
 
 .enrollCourseButton:hover {
     background: #c6defb;
-    border-color: #719fd8;
+    border-color: #97c6a8;
     color: #1b5135;
     text-decoration: none;
 }
 
 .enrollCourseButton:focus-visible {
-    outline: 3px solid #4389d6;
+    outline: 3px solid #4d9675;
     outline-offset: 3px;
 }
 
