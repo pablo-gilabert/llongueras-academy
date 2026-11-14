@@ -41,7 +41,7 @@ export const PortugueseTranslations: Record<string, string> = {
     "En construcción": "Em desenvolvimento",
     "Carreras": "Cursos",
     "inscripciones registradas": "matrículas registradas",
-    "Saldo mensual pendiente (Saldo demostrativo)": "Saldo mensal pendente (Saldo demonstrativo)",
+    "Módulo en construcción": "Módulo em desenvolvimento",
     "Consultar cursos": "Consultar cursos",
     "Consultar alumnos": "Consultar alunos",
     "Consultar inscripciones": "Consultar matrículas",
