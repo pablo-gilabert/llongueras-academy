@@ -33,6 +33,31 @@
     letter-spacing: .4px;
 }
 
+/* The dark public header needs a compact selector with strong text contrast. */
+.languageButton.publicLanguageButton {
+    height: 35px;
+    border: 1px solid #cdbba8a6;
+    background: #292725e8;
+    color: #f9f5f0;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: .2px;
+    box-shadow: 0 2px 12px #00000026;
+}
+
+.languageButton.publicLanguageButton:hover {
+    background: #433a34;
+    border-color: #e4c5a8;
+    color: #fff;
+}
+
+.languageButton.publicLanguageButton:focus-visible {
+    outline: 3px solid #e5bd96;
+    outline-offset: 3px;
+    border-color: #fff0da;
+}
+
+/* Keep the dropdown itself light for clear reading in every language. */
 .flag {
     display: block;
     width: 24px;
