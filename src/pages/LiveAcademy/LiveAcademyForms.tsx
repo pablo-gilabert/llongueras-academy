@@ -1,6 +1,7 @@
 /** Typed student, enrollment and transfer editing forms. */
 import { useState } from 'react';
 import type { FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Modal, SelectInput, TextArea, TextInput } from '../../components/Common/Common';
 import type { AcademyCourse, AcademyEnrollment, AcademyStudent } from '../../context/AcademyContext';
 import {
@@ -66,7 +67,7 @@ export function StudentEditor({ student, onClose }: {
 
     return <Modal
         title={student ? 'Editar ficha de alumno' : 'Agregar ficha de alumno'}
-        subtitle="Los cambios se guardan directamente en Cloud Firestore."
+        subtitle="Los cambios se guardan automáticamente en la base de datos de la academia"
         width="wide"
         onClose={onClose}
     >
@@ -76,7 +77,11 @@ export function StudentEditor({ student, onClose }: {
                 {t('Nombre completo registrado:')} <strong>{student.fullName}</strong>.{' '}
                 {t('Completá Nombre y Apellido para verificarlo sin perder el nombre importado.')}
             </p>}
-            <p className={Styles.formNote}>{t('Para editar el curso, la fecha de inscripción o el estado académico, utilizá la sección Inscripciones. La ficha personal no se duplica al inscribir a un alumno en varios cursos.')}</p>
+            <p className={Styles.formNote}>
+                {t('Para editar el curso, la fecha de inscripción o el estado académico, utilizá la sección ')}
+                <Link className={Styles.hintLink} to="/app/enrollments">{t('Inscripciones')}</Link>
+                {t('. La ficha personal no se duplica al inscribir a un alumno en varios cursos.')}
+            </p>
             <div className={Styles.formGrid}>
                 <TextInput label="Nombre" value={form.firstName} onChange={value => update('firstName', value)} required={!student || Boolean(student.firstName) || Boolean(form.firstName || form.lastName)} />
                 <TextInput label="Apellido" value={form.lastName} onChange={value => update('lastName', value)} required={!student || Boolean(student.lastName) || Boolean(form.firstName || form.lastName)} />
