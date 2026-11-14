@@ -944,11 +944,11 @@ function translateInterpolated(value: string): string {
 /** Translate Portuguese labels containing live record counts. */
 function translatePortugueseInterpolated(value: string): string {
     const patterns: Array<[RegExp, string]> = [
-        [/^(\\d+) registros visibles$/, '$1 registros visíveis'],
-        [/^(\\d+) alumnos inscriptos$/, '$1 alunos matriculados'],
-        [/^(\\d+) alumnos$/, '$1 alunos'],
-        [/^(\\d+) inscripciones$/, '$1 matrículas'],
-        [/^(\\d+) resultados$/, '$1 resultados'],
+        [/^(\d+) registros visibles$/, '$1 registros visíveis'],
+        [/^(\d+) alumnos inscriptos$/, '$1 alunos matriculados'],
+        [/^(\d+) alumnos$/, '$1 alunos'],
+        [/^(\d+) inscripciones$/, '$1 matrículas'],
+        [/^(\d+) resultados$/, '$1 resultados'],
         [/^Asistencia de (.+)$/, 'Frequência de $1'],
         [/^Nota de (.+)$/, 'Nota de $1'],
         [/^Editar (.+)$/, 'Editar $1'],
