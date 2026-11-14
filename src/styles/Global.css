@@ -388,7 +388,7 @@ button.academyWriteAction:focus-visible, a.academyWriteAction:focus-visible {
 
 /* Consistent interaction feedback across the entire application. */
 :where(button, a, [role="button"], [role="link"], summary, input[type="button"], input[type="submit"], input[type="reset"]) {
-    transition: opacity 180ms ease, filter 180ms ease, box-shadow 180ms ease, outline-color 180ms ease;
+    transition: opacity 180ms ease, filter 180ms ease, box-shadow 180ms ease, outline-color 180ms ease, background-color 180ms ease;
 }
 
 /* Preserve component-specific colors and backgrounds while making actions responsive. */
