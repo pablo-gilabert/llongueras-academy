@@ -538,7 +538,7 @@
     .studentCount { justify-content: flex-start; min-height: auto; }
 }
 
-/* Subtle warm-bronze edit action, distinct from the read-only link. */
+/* Accessible soft-green edit action, distinct from the read-only link. */
 .editStudentButton {
     display: inline-flex;
     align-items: center;
@@ -632,7 +632,7 @@
     text-align: center;
     overflow-wrap: anywhere;
 }
-.studentsTable :global(.tablePerson) .muted {
+.studentsTable :global(.tablePerson) :global(.muted) {
     display: block;
     text-align: center;
 }
