@@ -1,0 +1,57 @@
+/* Native SweetAlert2 focus management, with the academy's quiet green edit palette. */
+.academy-confirm-popup.swal2-popup {
+    width: min(440px, calc(100vw - 32px));
+    padding: 30px 26px 24px;
+    border: 1px solid #dfe6e0;
+    border-radius: 18px;
+    box-shadow: 0 24px 80px #15241b36;
+    background: #fff;
+    font-family: 'DM Sans', 'Segoe UI', Arial, sans-serif;
+}
+.academy-confirm-popup .swal2-icon.swal2-question {
+    border-color: #b4d3be;
+    color: #2b7450;
+}
+.academy-confirm-title.swal2-title {
+    color: #24332b;
+    font-size: clamp(19px, 3vw, 23px);
+    line-height: 1.3;
+    font-weight: 750;
+}
+.academy-confirm-description.swal2-html-container {
+    color: #58645d;
+    font-size: 14px;
+    line-height: 1.65;
+}
+.academy-confirm-actions.swal2-actions { gap: 12px; margin-top: 25px; }
+.academy-confirm-approve.swal2-styled,
+.academy-confirm-cancel.swal2-styled {
+    border: 1px solid transparent;
+    border-radius: 9px;
+    padding: 11px 18px;
+    font: 700 13px 'DM Sans', 'Segoe UI', Arial, sans-serif;
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+.academy-confirm-approve.swal2-styled { background: #28754e; color: #fff; }
+.academy-confirm-approve.swal2-styled:hover { background: #1e613f; }
+.academy-confirm-cancel.swal2-styled { background: #f5f5f3; border-color: #dce0db; color: #38433d; }
+.academy-confirm-cancel.swal2-styled:hover { background: #e9eeea; }
+.academy-confirm-popup :is(.academy-confirm-approve, .academy-confirm-cancel):focus-visible {
+    outline: 3px solid #2e7955 !important;
+    outline-offset: 3px;
+}
+.academy-confirm-enter { animation: academy-confirm-show 180ms ease-out both; }
+.academy-confirm-exit { animation: academy-confirm-hide 130ms ease-in both; }
+@keyframes academy-confirm-show {
+    from { opacity: 0; transform: translateY(9px) scale(.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes academy-confirm-hide {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(5px); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .academy-confirm-enter, .academy-confirm-exit { animation: none; }
+    .academy-confirm-approve.swal2-styled, .academy-confirm-cancel.swal2-styled { transition: none; }
+}
