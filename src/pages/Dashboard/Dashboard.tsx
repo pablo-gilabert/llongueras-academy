@@ -51,7 +51,7 @@ export function Dashboard() {
                             <Avatar name={entry.actorName} />
                             <div className={Styles.itemMain}>
                                 <strong>{entry.actorName}</strong>
-                                <small>{activityDescription(entry, locale === 'en')}</small>
+                                <small>{activityDescription(entry, locale === 'en', locale === 'pt-BR')}</small>
                             </div>
                             <span className={Styles.itemAside}>{entry.createdAt ? entry.createdAt.toLocaleString(locale === 'en' ? 'en-US' : locale === 'pt-BR' ? 'pt-BR' : 'es-AR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '…'}</span>
                         </div>
