@@ -10,6 +10,7 @@ import { auth, db } from '../../lib/Firebase';
 import { roleLabel } from '../../lib/Utils';
 import { t } from '../../i18n/Translations';
 import { Avatar, Button, Notice, PageTitle, Panel, TextInput } from '../../components/Common/Common';
+import { confirmChange } from '../../lib/ConfirmAction';
 import Styles from './Profile.module.css';
 
 type NoticeState = { message: string; tone: 'success' | 'warning' } | null;
@@ -146,6 +147,7 @@ export function Profile() {
         if (!firebaseUser || firebaseUser.uid !== user.id)
             return;
 
+        if (!await confirmChange('profile')) return;
         setSavingProfile(true);
         try {
             // This collection accepts only personal fields, never roles or claims.
@@ -183,6 +185,7 @@ export function Profile() {
             return;
         }
 
+        if (!await confirmChange('email')) return;
         setSavingEmail(true);
         try {
             await confirmPassword(emailPassword);
@@ -219,6 +222,7 @@ export function Profile() {
         if (!firebaseUser || firebaseUser.uid !== user.id)
             return;
 
+        if (!await confirmChange('password')) return;
         setSavingPassword(true);
         try {
             await confirmPassword(currentPassword);
@@ -260,7 +264,7 @@ export function Profile() {
                         <SensitiveInput label="DNI (opcional)" value={dni} onChange={setDni} isDni autoComplete="off" />
                         <p className={Styles.hint}>{t('El DNI es opcional y podés completarlo más adelante. No cambia tus permisos de acceso.')}</p>
                         {profileNotice && <Notice tone={profileNotice.tone}>{t(profileNotice.message)}</Notice>}
-                        <div className={Styles.actions}><Button type="submit" disabled={savingProfile}>{t(savingProfile ? 'Guardando…' : 'Guardar datos personales')}</Button></div>
+                        <div className={Styles.actions}><Button type="submit" className="academyWriteAction" disabled={savingProfile}>{t(savingProfile ? 'Guardando…' : 'Guardar datos personales')}</Button></div>
                     </form>
                 </Panel>
                 <Panel title={t('Cambiar correo de acceso')} subtitle={t('Tu correo actual se mantiene hasta que verifiques la nueva dirección.')}>
@@ -269,7 +273,7 @@ export function Profile() {
                         <TextInput label="Nuevo correo electrónico" value={newEmail} onChange={setNewEmail} type="email" required />
                         <SensitiveInput label="Contraseña actual" value={emailPassword} onChange={setEmailPassword} autoComplete="current-password" required />
                         {emailNotice && <Notice tone={emailNotice.tone}>{t(emailNotice.message)}</Notice>}
-                        <div className={Styles.actions}><Button type="submit" disabled={savingEmail}>{t(savingEmail ? 'Enviando…' : 'Enviar verificación de correo')}</Button></div>
+                        <div className={Styles.actions}><Button type="submit" className="academyWriteAction" disabled={savingEmail}>{t(savingEmail ? 'Enviando…' : 'Enviar verificación de correo')}</Button></div>
                     </form>
                 </Panel>
                 <Panel title={t('Cambiar contraseña')} subtitle={t('Por seguridad, confirmá tu contraseña actual antes de establecer una nueva.')}>
@@ -279,7 +283,7 @@ export function Profile() {
                         <SensitiveInput label="Confirmar nueva contraseña" value={passwordConfirmation} onChange={setPasswordConfirmation} autoComplete="new-password" required />
                         <p className={Styles.hint}>{t('Usá al menos 8 caracteres. Nunca compartas tu contraseña.')}</p>
                         {passwordNotice && <Notice tone={passwordNotice.tone}>{t(passwordNotice.message)}</Notice>}
-                        <div className={Styles.actions}><Button type="submit" disabled={savingPassword}>{t(savingPassword ? 'Actualizando…' : 'Actualizar contraseña')}</Button></div>
+                        <div className={Styles.actions}><Button type="submit" className="academyWriteAction" disabled={savingPassword}>{t(savingPassword ? 'Actualizando…' : 'Actualizar contraseña')}</Button></div>
                     </form>
                 </Panel>
             </div>
