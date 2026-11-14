@@ -24,8 +24,8 @@
     line-height: 1.65;
 }
 .academy-confirm-actions.swal2-actions { gap: 12px; margin-top: 25px; }
-.academy-confirm-approve.swal2-styled,
-.academy-confirm-cancel.swal2-styled {
+.academy-confirm-approve.swal2-confirm,
+.academy-confirm-cancel.swal2-cancel {
     border: 1px solid transparent;
     border-radius: 9px;
     padding: 11px 18px;
@@ -33,10 +33,10 @@
     cursor: pointer;
     transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
-.academy-confirm-approve.swal2-styled { background: #28754e; color: #fff; }
-.academy-confirm-approve.swal2-styled:hover { background: #1e613f; }
-.academy-confirm-cancel.swal2-styled { background: #f5f5f3; border-color: #dce0db; color: #38433d; }
-.academy-confirm-cancel.swal2-styled:hover { background: #e9eeea; }
+.academy-confirm-approve.swal2-confirm { background: #28754e; color: #fff; }
+.academy-confirm-approve.swal2-confirm:hover { background: #1e613f; }
+.academy-confirm-cancel.swal2-cancel { background: #f5f5f3; border-color: #dce0db; color: #38433d; }
+.academy-confirm-cancel.swal2-cancel:hover { background: #e9eeea; }
 .academy-confirm-popup :is(.academy-confirm-approve, .academy-confirm-cancel):focus-visible {
     outline: 3px solid #2e7955 !important;
     outline-offset: 3px;
@@ -53,5 +53,5 @@
 }
 @media (prefers-reduced-motion: reduce) {
     .academy-confirm-enter, .academy-confirm-exit { animation: none; }
-    .academy-confirm-approve.swal2-styled, .academy-confirm-cancel.swal2-styled { transition: none; }
+    .academy-confirm-approve.swal2-confirm, .academy-confirm-cancel.swal2-cancel { transition: none; }
 }
