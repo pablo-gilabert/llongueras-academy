@@ -13,6 +13,7 @@ import {
 } from '../../lib/AcademyMutations';
 import type { AcademicStatus, EnrollmentDraft, StudentDraft, TransferDraft } from '../../lib/AcademyMutations';
 import { getActiveLocale, localizeCourseName, t } from '../../i18n/Translations';
+import { confirmChange } from '../../lib/ConfirmAction';
 import Styles from './LiveAcademy.module.css';
 
 function localToday() {
@@ -50,6 +51,7 @@ export function StudentEditor({ student, onClose }: {
             setError('Confirmá la desactivación de la ficha.');
             return;
         }
+        if (!await confirmChange(student ? 'update' : 'create')) return;
         setSaving(true);
         setError('');
         try {
@@ -104,7 +106,7 @@ export function StudentEditor({ student, onClose }: {
             {error && <p className={Styles.error} role="alert">{t(error)}</p>}
             <div className={Styles.formActions}>
                 <Button variant="secondary" onClick={onClose} disabled={saving}>{t('Cancelar')}</Button>
-                <Button type="submit" disabled={saving}>{t(saving ? 'Guardando…' : 'Guardar ficha')}</Button>
+                <Button type="submit" className="academyWriteAction" disabled={saving}>{t(saving ? 'Guardando…' : 'Guardar ficha')}</Button>
             </div>
         </form>
     </Modal>;
@@ -148,6 +150,7 @@ export function EnrollmentEditor({ enrollment, students, courses, initialStudent
             setError('Confirmá la baja de la inscripción.');
             return;
         }
+        if (!await confirmChange(enrollment ? 'update' : 'create')) return;
         setError('');
         setSaving(true);
         try {
@@ -226,7 +229,7 @@ export function EnrollmentEditor({ enrollment, students, courses, initialStudent
             {error && <p className={Styles.error} role="alert">{t(error)}</p>}
             <div className={Styles.formActions}>
                 <Button variant="secondary" onClick={onClose} disabled={saving}>{t('Cancelar')}</Button>
-                <Button type="submit" disabled={saving}>{t(saving ? 'Guardando…' : 'Guardar inscripción')}</Button>
+                <Button type="submit" className="academyWriteAction" disabled={saving}>{t(saving ? 'Guardando…' : 'Guardar inscripción')}</Button>
             </div>
         </form>
     </Modal>;
@@ -251,6 +254,7 @@ export function TransferEditor({ enrollment, courses, onClose }: {
             setError('Confirmá que querés conservar la inscripción anterior como trasladada.');
             return;
         }
+        if (!await confirmChange('transfer')) return;
         setSaving(true);
         setError('');
         try {
@@ -291,7 +295,7 @@ export function TransferEditor({ enrollment, courses, onClose }: {
             {error && <p className={Styles.error} role="alert">{t(error)}</p>}
             <div className={Styles.formActions}>
                 <Button variant="secondary" onClick={onClose} disabled={saving}>{t('Cancelar')}</Button>
-                <Button type="submit" disabled={saving || !confirmed}>{t(saving ? 'Guardando…' : 'Confirmar traslado')}</Button>
+                <Button type="submit" className="academyWriteAction" disabled={saving || !confirmed}>{t(saving ? 'Guardando…' : 'Confirmar traslado')}</Button>
             </div>
         </form>
     </Modal>;
