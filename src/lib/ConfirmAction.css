@@ -55,3 +55,24 @@
     .academy-confirm-enter, .academy-confirm-exit { animation: none; }
     .academy-confirm-approve.swal2-confirm, .academy-confirm-cancel.swal2-cancel { transition: none; }
 }
+
+/* Centered, one-second acknowledgment after the database confirms a save. */
+.academy-success-popup.swal2-popup {
+    width: min(390px, calc(100vw - 32px));
+    padding: 28px 24px 26px;
+    border: 1px solid #cce4d4;
+    border-radius: 17px;
+    background: #fff;
+    box-shadow: 0 22px 65px #172a1c34;
+    font-family: 'DM Sans', 'Segoe UI', Arial, sans-serif;
+}
+.academy-success-popup .swal2-icon.swal2-success {
+    border-color: #4caa71;
+    color: #28754e;
+}
+.academy-success-title.swal2-title {
+    color: #244535;
+    font-size: clamp(18px, 3vw, 22px);
+    font-weight: 750;
+    line-height: 1.35;
+}
