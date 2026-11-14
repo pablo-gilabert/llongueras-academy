@@ -60,7 +60,7 @@
 
 .numberAccent {
     font-size: 13px;
-    color: #bb9c79;
+    color: var(--bronze-dark);
     font-weight: 850;
 }
 
@@ -83,7 +83,7 @@
 }
 
 .tabActive {
-    border-bottom-color: #b38e65;
+    border-bottom-color: var(--bronze);
     color: var(--ink);
 }
 

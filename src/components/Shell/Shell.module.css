@@ -386,15 +386,6 @@
     color: #12509c;
 }
 
-:global([data-theme='dark']) .developerLink {
-    color: #80baff;
-}
-
-:global([data-theme='dark']) .developerLink:hover,
-:global([data-theme='dark']) .developerLink:focus-visible {
-    color: #a9d2ff;
-}
-
 .menuToggle, .mobileClose {
     display: none;
     border: 0;
@@ -457,15 +448,6 @@
 .developerLink:hover,
 .developerLink:focus-visible {
     color: #12509c;
-}
-
-:global([data-theme='dark']) .developerLink {
-    color: #80baff;
-}
-
-:global([data-theme='dark']) .developerLink:hover,
-:global([data-theme='dark']) .developerLink:focus-visible {
-    color: #a9d2ff;
 }
 
 .menuToggle, .mobileClose {

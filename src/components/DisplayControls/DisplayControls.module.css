@@ -1,4 +1,4 @@
-/* Language/theme controls at responsive breakpoints. */
+/* Language controls at responsive breakpoints. */
 /* Compact display preferences shared across the public and authenticated views. */
 
 .controls {
@@ -12,7 +12,7 @@
     z-index: 80;
 }
 
-.languageButton, .themeToggle {
+.languageButton {
     border: 1px solid var(--line);
     border-radius: 11px;
     color: var(--ink);
@@ -87,53 +87,12 @@
     margin-top: 3px;
 }
 
-.themeToggle {
-    padding: 0 10px;
-    gap: 7px;
-    color: var(--muted);
-}
-
-.activeIcon {
-    color: var(--bronze-dark);
-}
-
-.track {
-    display: flex;
-    width: 27px;
-    height: 16px;
-    border-radius: 99px;
-    padding: 2px;
-    background: var(--line);
-    align-items: center;
-    transition: background .2s;
-}
-
-.knob {
-    background: var(--ink);
-    height: 12px;
-    width: 12px;
-    border-radius: 50%;
-    transition: transform .2s;
-}
-
-:global([data-theme="dark"]) .knob {
-    transform: translateX(11px);
-    background: var(--sand);
-}
-
-:global([data-theme="dark"]) .track {
-    background: #4b5957;
-}
 
 @media (max-width: 550px) {
     .controls {
         gap: 6px;
     }
 
-    .themeToggle {
-        gap: 5px;
-        padding: 0 7px;
-    }
 
     .languageButton {
         padding: 0 8px;

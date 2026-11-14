@@ -54,7 +54,7 @@ export function LiveOverview() {
                 { label: 'La academia ofrece', value: courses.error ? '—' : courses.loading ? '…' : `${courses.items.filter(course => course.active).length} ${t('Carreras')}` },
                 { label: 'Sistema de asistencias', value: 'En construcción' },
                 { label: 'La academia tiene', value: enrollments.error ? '—' : enrollments.loading ? '…' : `${enrollments.items.length} ${t('inscripciones registradas')}` },
-                { label: 'Saldo mensual pendiente (inventado)', value: '$ 1.043.000' },
+                { label: 'Saldo mensual pendiente (Saldo demostrativo)', value: '$ 1.043.000' },
             ].map(item => <div className={Styles.summaryFiveCard} key={item.label}>
                 <span>{t(item.label)}</span>
                 <strong>{t(item.value)}</strong>

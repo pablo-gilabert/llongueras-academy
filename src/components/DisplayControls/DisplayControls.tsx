@@ -1,6 +1,6 @@
 /** Persistent language and appearance controls. */
 import { useEffect, useRef, useState } from 'react';
-import { Check, ChevronDown, Moon, Sun } from 'lucide-react';
+import { Check, ChevronDown } from 'lucide-react';
 import { usePreferences } from '../../i18n/Preferences';
 import { t, type Locale } from '../../i18n/Translations';
 import Styles from './DisplayControls.module.css';
@@ -18,7 +18,7 @@ const Languages: LanguageOption[] = [
 ];
 
 export function DisplayControls() {
-    const { locale, theme, setLocale, toggleTheme } = usePreferences();
+    const { locale, setLocale } = usePreferences();
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const activeLanguage = Languages.find((language) => language.locale === locale)!;
@@ -87,20 +87,6 @@ export function DisplayControls() {
                 )}
             </div>
 
-            <button
-                type="button"
-                className={Styles.themeToggle}
-                onClick={toggleTheme}
-                aria-label={t(theme === 'light' ? 'Modo oscuro' : 'Modo claro')}
-                aria-pressed={theme === 'dark'}
-                title={t('Tema de apariencia')}
-            >
-                <Sun size={15} className={theme === 'light' ? Styles.activeIcon : ''} aria-hidden="true" />
-                <span className={Styles.track} aria-hidden="true">
-                    <span className={Styles.knob} />
-                </span>
-                <Moon size={15} className={theme === 'dark' ? Styles.activeIcon : ''} aria-hidden="true" />
-            </button>
         </div>
     );
 }

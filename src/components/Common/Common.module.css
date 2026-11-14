@@ -262,7 +262,7 @@
 
 .field input:focus, .field select:focus, .field textarea:focus {
     border-color: var(--bronze);
-    box-shadow: 0 0 0 3px rgba(197, 151, 112, .14);
+    box-shadow: 0 0 0 3px rgba(44, 108, 166, .14);
 }
 
 .field textarea {

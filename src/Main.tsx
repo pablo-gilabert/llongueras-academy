@@ -6,7 +6,6 @@ import { AuthProvider } from './context/AuthContext';
 import { PreferencesProvider } from './i18n/Preferences';
 import App from './App';
 import './styles/Global.css';
-import './styles/Themes.css';
 createRoot(document.getElementById('root')!).render(<StrictMode>
     <PreferencesProvider>
         <BrowserRouter>
