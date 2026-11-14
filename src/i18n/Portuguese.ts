@@ -139,6 +139,7 @@ export const PortugueseTranslations: Record<string, string> = {
     "Ordenar inscripciones": "Ordenar matrículas",
     "Curso": "Curso",
     "Detalle": "Detalhes",
+    "Editar inscripción": "Editar matrícula",
     "No hay inscripciones para ese filtro.": "Não há matrículas para esse filtro.",
     "Detalle de inscripción": "Detalhes da matrícula",
     "Inscripción académica": "Matrícula acadêmica",
