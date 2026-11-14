@@ -12,7 +12,7 @@ const sensitivePaths = [
     /(?:^|\/)firebase-private(?:\/|\.|$)/i,
     /(?:^|\/)(?:secrets|credentials|private-data)(?:\/|$)/i,
     /(?:serviceaccount|service-account|adminsdk|\-admin)\.json$/i,
-    /\.(?:csv|tsv|xlsx?|ods|sql|sqlite3?|db|bak|backup|rar|7z|pem|p12|pfx|key)$/i,
+    /\.(?:csv|tsv|xlsx?|ods|sql|sqlite3?|db|bak|backup|rar|7z|zip|tar|tgz|pem|p12|pfx|key)$/i,
 ];
 const checkedExtensions = new Set(['.js', '.mjs', '.cjs', '.ts', '.tsx', '.json', '.md', '.txt', '.rules', '.env']);
 const violations = [];
