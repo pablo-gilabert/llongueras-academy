@@ -74,7 +74,8 @@ export async function saveTeacher(input: TeacherDraft, teacherId?: string): Prom
 
     const courseIds = [...new Set(input.courseIds)];
     if (courseIds.length) {
-        const courses = await getDocsFromServer(collection(db, 'courses'));
+        // Verify course assignments against current Firestore IDs before persisting them.
+    const courses = await getDocsFromServer(collection(db, 'courses'));
         const known = new Map(courses.docs.map(item => [item.id, item.data().active === true]));
         for (const courseId of courseIds) {
             if (!known.has(courseId))
