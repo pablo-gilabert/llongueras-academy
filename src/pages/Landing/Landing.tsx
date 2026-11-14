@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { ACADEMY_CONTACT, HISTORY, SOURCES, TRAINING } from '../../data/Academy';
 import { usePreferences } from '../../i18n/Preferences';
+import { DisplayControls } from '../../components/DisplayControls/DisplayControls';
 import { t } from '../../i18n/Translations';
 import Styles from './Landing.module.css';
 
@@ -115,6 +116,7 @@ export function Landing() {
                     <a href="#metodo" onClick={() => setMenuOpen(false)}>{localized('El método', 'The method')}</a>
                     <a href="#cursos" onClick={() => setMenuOpen(false)}>{localized('Formaciones', 'Training')}</a>
                     <a href="#contacto" onClick={() => setMenuOpen(false)}>{localized('Contacto', 'Contact')}</a>
+                    <div className={Styles.publicLanguage}><DisplayControls /></div>
                 </nav>
                 <div className={Styles.headerRight}>
                     <Link className={Styles.portalLink} to="/login">
