@@ -71,24 +71,26 @@ export function StudentEditor({ student, onClose }: {
         onClose={onClose}
     >
         <form onSubmit={submit} className={Styles.editorForm}>
-            <p className={Styles.formNote}>{t('Solo administradores: podés editar todos los datos personales de esta ficha. Los campos sin confirmar pueden quedar vacíos; el nombre completo es obligatorio y el DNI solo puede quedar pendiente en fichas que ya se importaron sin él.')}</p>
+            <p className={Styles.formNote}>{t('Completá los datos del alumno. Correo electrónico, nacionalidad y dirección son opcionales.')}</p>
+            {student && (!student.firstName || !student.lastName) && <p className={Styles.formNote}>
+                {t('Nombre completo registrado:')} <strong>{student.fullName}</strong>.{' '}
+                {t('Completá Nombre y Apellido para verificarlo sin perder el nombre importado.')}
+            </p>}
             <p className={Styles.formNote}>{t('Para editar el curso, la fecha de inscripción o el estado académico, utilizá la sección Inscripciones. La ficha personal no se duplica al inscribir a un alumno en varios cursos.')}</p>
             <div className={Styles.formGrid}>
-                <TextInput label={t("Nombre completo")} value={form.fullName} onChange={value => update('fullName', value)} required />
-                <TextInput label={t(!student || student.dni ? "DNI" : "DNI (pendiente · opcional)")} value={form.dni} onChange={value => update('dni', value)} required={!student || Boolean(student.dni)} />
-                <TextInput label={t("Nombre (verificado, opcional)")} value={form.firstName} onChange={value => update('firstName', value)} />
-                <TextInput label={t("Apellido (verificado, opcional)")} value={form.lastName} onChange={value => update('lastName', value)} />
-                <TextInput label={t("Fecha de nacimiento (opcional)")} type="date" value={form.birthDate} onChange={value => update('birthDate', value)} />
-                <TextInput label={t("Lugar de nacimiento (opcional)")} value={form.birthPlace} onChange={value => update('birthPlace', value)} />
-                <TextInput label={t("Nacionalidad (código, opcional)")} value={form.nationalityCode} onChange={value => update('nationalityCode', value)} />
-                <TextInput label={t("Teléfono (opcional)")} value={form.phone} onChange={value => update('phone', value)} />
-                <TextInput label={t("Correo electrónico (opcional)")} type="email" value={form.email} onChange={value => update('email', value)} />
-                <TextInput label={t("Localidad (opcional)")} value={form.city} onChange={value => update('city', value)} />
+                <TextInput label="Nombre" value={form.firstName} onChange={value => update('firstName', value)} required={!student || Boolean(student.firstName) || Boolean(form.firstName || form.lastName)} />
+                <TextInput label="Apellido" value={form.lastName} onChange={value => update('lastName', value)} required={!student || Boolean(student.lastName) || Boolean(form.firstName || form.lastName)} />
+                <TextInput label="DNI" value={form.dni} onChange={value => update('dni', value)} required={!student || Boolean(student.dni)} />
+                <TextInput label="Fecha de nacimiento" type="date" value={form.birthDate} onChange={value => update('birthDate', value)} required={!student || Boolean(student.birthDate)} />
+                <TextInput label="Nacionalidad (opcional)" value={form.nationalityCode} onChange={value => update('nationalityCode', value)} />
+                <TextInput label="Teléfono" type="tel" value={form.phone} onChange={value => update('phone', value)} required={!student || Boolean(student.phone)} />
+                <TextInput label="Correo electrónico (opcional)" type="email" value={form.email} onChange={value => update('email', value)} />
+                <TextInput label="Localidad" value={form.city} onChange={value => update('city', value)} required={!student || Boolean(student.city)} />
                 <div className={Styles.formFull}>
-                    <TextInput label={t("Dirección (opcional)")} value={form.address} onChange={value => update('address', value)} />
+                    <TextInput label="Dirección (opcional)" value={form.address} onChange={value => update('address', value)} />
                 </div>
                 <SelectInput
-                    label={t("Estado de la ficha")}
+                    label="Estado del alumno"
                     value={form.active}
                     onChange={value => update('active', value as StudentDraft['active'])}
                     options={[
@@ -98,7 +100,6 @@ export function StudentEditor({ student, onClose }: {
                     ]}
                 />
             </div>
-            <p className={Styles.formNote}>{t('Si no se verificaron nombre y apellido por separado, dejalos vacíos. Desactivar la ficha no elimina sus inscripciones.')}</p>
             {form.active === 'false' && student?.active !== false && <label className={Styles.confirmLine}>
                 <input type="checkbox" checked={confirmDeactivate} onChange={event => setConfirmDeactivate(event.target.checked)} />
                 <span>{t('Confirmo que quiero desactivar esta ficha sin borrar su historial.')}</span>

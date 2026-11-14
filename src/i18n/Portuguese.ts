@@ -2,6 +2,16 @@
 import { PublicPortugueseTranslations } from './PortuguesePublic';
 
 export const PortugueseTranslations: Record<string, string> = {
+    "Completá los datos del alumno. Correo electrónico, nacionalidad y dirección son opcionales.": "Preencha os dados do aluno. E-mail, nacionalidade e endereço são opcionais.",
+    "Nombre completo registrado:": "Nome completo registrado:",
+    "Completá Nombre y Apellido para verificarlo sin perder el nombre importado.": "Preencha Nome e Sobrenome para verificá-lo sem perder o nome importado.",
+    "Nacionalidad (opcional)": "Nacionalidade (opcional)",
+    "Estado del alumno": "Situação do aluno",
+    "Completá el nombre y el apellido del alumno.": "Preencha o nome e o sobrenome do aluno.",
+    "Localidad": "Localidade",
+    "La fecha de nacimiento es obligatoria.": "A data de nascimento é obrigatória.",
+    "El teléfono es obligatorio.": "O telefone é obrigatório.",
+    "La localidad es obligatoria.": "A cidade é obrigatória.",
     "¿Querés agregar un nuevo registro?": "Deseja adicionar um novo registro?",
     "¿Confirmás la creación del registro?": "Confirma a criação deste registro?",
     "¿Querés guardar estos cambios?": "Deseja salvar estas alterações?",

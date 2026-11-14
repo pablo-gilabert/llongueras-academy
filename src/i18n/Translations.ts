@@ -2,6 +2,15 @@
 import { PortugueseTranslations } from './Portuguese';
 export type Locale = 'es' | 'en' | 'pt-BR';
 const EnglishTranslations: Record<string, string> = {
+    "Completá los datos del alumno. Correo electrónico, nacionalidad y dirección son opcionales.": "Complete the student information. Email, nationality and address are optional.",
+    "Nombre completo registrado:": "Recorded full name:",
+    "Completá Nombre y Apellido para verificarlo sin perder el nombre importado.": "Complete First name and Last name to verify it without losing the imported name.",
+    "Nacionalidad (opcional)": "Nationality (optional)",
+    "Estado del alumno": "Student status",
+    "Completá el nombre y el apellido del alumno.": "Enter the student's first and last name.",
+    "La fecha de nacimiento es obligatoria.": "Date of birth is required.",
+    "El teléfono es obligatorio.": "Phone number is required.",
+    "La localidad es obligatoria.": "City is required.",
     "¿Querés agregar un nuevo registro?": "Would you like to add a new record?",
     "¿Confirmás la creación del registro?": "Confirm creating this record?",
     "¿Querés guardar estos cambios?": "Save these changes?",
