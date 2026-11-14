@@ -14,7 +14,7 @@ import {
 } from '../../lib/AcademyMutations';
 import type { AcademicStatus, EnrollmentDraft, StudentDraft, TransferDraft } from '../../lib/AcademyMutations';
 import { getActiveLocale, localizeCourseName, t } from '../../i18n/Translations';
-import { confirmChange } from '../../lib/ConfirmAction';
+import { confirmChange, showSavedSuccess } from '../../lib/ConfirmAction';
 import Styles from './LiveAcademy.module.css';
 
 function localToday() {
@@ -58,6 +58,7 @@ export function StudentEditor({ student, onClose }: {
         try {
             await saveStudent(form, student?.id);
             onClose();
+            showSavedSuccess();
         } catch (reason) {
             setError(writeError(reason));
         } finally {
@@ -163,6 +164,7 @@ export function EnrollmentEditor({ enrollment, students, courses, initialStudent
             if (enrollment) await updateEnrollment(enrollment.id, form);
             else await createEnrollment(form);
             onClose();
+            showSavedSuccess();
         } catch (reason) {
             setError(writeError(reason));
         } finally {
@@ -266,6 +268,7 @@ export function TransferEditor({ enrollment, courses, onClose }: {
         try {
             await transferEnrollment(enrollment.id, form);
             onClose();
+            showSavedSuccess();
         } catch (reason) {
             setError(writeError(reason));
         } finally {
