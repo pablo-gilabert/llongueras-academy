@@ -431,7 +431,7 @@
 
 .courseGrid {
     display: grid;
-    grid-template-columns: repeat(4,minmax(0,1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 20px;
     align-items: stretch;
 }
@@ -440,9 +440,16 @@
 .courseCard {
     display: flex;
     flex-direction: column;
+    grid-column: span 2;
     min-width: 0;
     background: #fff;
     border: 1px solid #e3dbd3;
+}
+
+/* Keep the second row balanced with five academy programs. */
+.courseGrid > .courseCard:nth-child(4):nth-last-child(2),
+.courseGrid > .courseCard:nth-child(5):last-child {
+    grid-column: span 3;
 }
 
 .courseImage {
@@ -454,6 +461,7 @@
 }
 
 .courseImage img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -462,18 +470,6 @@
 
 .courseCard:hover img {
     transform: scale(1.06);
-}
-
-.courseImage > span {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    background: #f5eee6;
-    padding: 9px 12px;
-    text-transform: uppercase;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 1px;
 }
 
 .courseBody {
@@ -785,7 +781,11 @@
     }
 
     .courseGrid {
-        grid-template-columns: repeat(2,minmax(0,1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .courseGrid > .courseCard:nth-child(n) {
+        grid-column: auto;
     }
 
     .featureText {
@@ -1498,9 +1498,9 @@
 /* Founder editorial: brand imagery is decorative, never represented as a portrait. */
 .founder {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, .9fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     background: #f4f0eb;
-    min-height: 670px;
+    min-height: 700px;
 }
 
 .founderContent {
@@ -1543,21 +1543,20 @@
 }
 
 .founderImage {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 670px;
+    position: relative;
+    min-height: 680px;
     overflow: hidden;
-    padding: 34px;
     background: #161616;
 }
 
 .founderImage img {
+    position: absolute;
+    inset: 0;
     display: block;
     width: 100%;
-    max-width: 760px;
-    height: auto;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 @media (max-width: 760px) {
@@ -1572,7 +1571,6 @@
     .founderImage {
         min-height: 350px;
         max-height: 460px;
-        padding: 20px;
     }
 }
 
