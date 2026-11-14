@@ -18,7 +18,8 @@ const Languages: LanguageOption[] = [
     { locale: 'pt-BR', flag: '/flags/Brazil.svg', label: 'PT', name: 'Português (Brasil)' },
 ];
 
-export function DisplayControls() {
+/** The public variant is scoped to the landing navbar; campus controls remain unchanged. */
+export function DisplayControls({ variant = 'default' }: { variant?: 'default' | 'public' }) {
     const { locale, setLocale } = usePreferences();
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -52,7 +53,7 @@ export function DisplayControls() {
             <div className={Styles.languageMenu} ref={menuRef}>
                 <button
                     type="button"
-                    className={Styles.languageButton}
+                    className={variant === 'public' ? `${Styles.languageButton} ${Styles.publicLanguageButton}` : Styles.languageButton}
                     onClick={() => setIsOpen((value) => !value)}
                     aria-label={t('Idioma')}
                     aria-haspopup="menu"
