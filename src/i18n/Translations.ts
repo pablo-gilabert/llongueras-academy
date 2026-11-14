@@ -996,15 +996,17 @@ function normalizeCourseTitle(value: string): string {
 /** Translate known course names, preserving any unknown proper nouns. */
 export function localizeCourseName(name: string | null | undefined): string {
     if (!name || ActiveLocale === 'es') return name ?? '';
+    // Capture a translation-only locale so callbacks cannot index the dictionary with 'es'.
+    const locale: 'en' | 'pt-BR' = ActiveLocale === 'pt-BR' ? 'pt-BR' : 'en';
     const exact = CourseTitleTranslations[normalizeCourseTitle(name)];
-    if (exact) return exact[ActiveLocale];
+    if (exact) return exact[locale];
     // Translate domain vocabulary in additional course names without altering the source.
     const tokens = name.match(/\p{L}+|[^\p{L}]+/gu) ?? [];
     return tokens.map(token => {
-        const replacement = CourseWordTranslations[normalizeCourseTitle(token)]?.[ActiveLocale];
+        const replacement = CourseWordTranslations[normalizeCourseTitle(token)]?.[locale];
         if (!replacement) return token;
         return /^\p{Lu}/u.test(token)
-            ? replacement.charAt(0).toLocaleUpperCase(ActiveLocale) + replacement.slice(1)
+            ? replacement.charAt(0).toLocaleUpperCase(locale) + replacement.slice(1)
             : replacement;
     }).join('');
 }
