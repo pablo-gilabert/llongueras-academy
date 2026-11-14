@@ -1,5 +1,8 @@
 /** Brazilian Portuguese translations for academic workflows. */
+import { PublicPortugueseTranslations } from './PortuguesePublic';
+
 export const PortugueseTranslations: Record<string, string> = {
+    ...PublicPortugueseTranslations,
     "Idioma": "Idioma",
     "Español": "Espanhol",
     "Inglés": "Inglês",
