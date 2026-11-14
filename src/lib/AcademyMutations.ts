@@ -72,21 +72,44 @@ async function requireAdministrator(): Promise<string> {
     return user.uid;
 }
 
-function studentFields(input: StudentDraft, allowMissingDni = false) {
-    const fullName = normalize(input.fullName);
+// Legacy imported records may have missing fields; a new profile must be complete.
+interface StudentMissingAllowance {
+    dni: boolean;
+    names: boolean;
+    birthDate: boolean;
+    phone: boolean;
+    city: boolean;
+}
+
+function studentFields(input: StudentDraft, allowMissing: StudentMissingAllowance) {
     const firstName = optional(input.firstName);
     const lastName = optional(input.lastName);
+    // Do not guess how an imported full name should be divided into given/surnames.
+    // Once both names have been verified, derive the public display name from them.
+    const fullName = firstName && lastName
+        ? normalize(`${firstName} ${lastName}`)
+        : normalize(input.fullName);
     const dni = input.dni.replace(/[.\s-]/g, '');
     const email = input.email.trim().toLowerCase();
-    if (fullName.length < 3 || fullName.length > 160)
-        throw new Error('Ingresá el nombre completo del alumno (hasta 160 caracteres).');
-    if ((!dni && !allowMissingDni) || (dni && !/^\d{7,9}$/.test(dni)))
-        throw new Error('El DNI debe contener de 7 a 9 dígitos.');
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-        throw new Error('Revisá el correo electrónico.');
+    const phone = optional(input.phone);
+    const city = optional(input.city);
+    if ((!firstName || !lastName) && !allowMissing.names)
+        throw new Error('Completá el nombre y el apellido del alumno.');
     if ((firstName && !lastName) || (!firstName && lastName))
         throw new Error('Completá tanto el nombre como el apellido, o dejá ambos pendientes.');
-    for (const value of [input.birthPlace, input.nationalityCode, input.phone, input.address, input.city]) {
+    if (fullName.length < 3 || fullName.length > 160)
+        throw new Error('Ingresá el nombre completo del alumno (hasta 160 caracteres).');
+    if ((!dni && !allowMissing.dni) || (dni && !/^\d{7,9}$/.test(dni)))
+        throw new Error('El DNI debe contener de 7 a 9 dígitos.');
+    if (!input.birthDate && !allowMissing.birthDate)
+        throw new Error('La fecha de nacimiento es obligatoria.');
+    if (!phone && !allowMissing.phone)
+        throw new Error('El teléfono es obligatorio.');
+    if (!city && !allowMissing.city)
+        throw new Error('La localidad es obligatoria.');
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+        throw new Error('Revisá el correo electrónico.');
+    for (const value of [input.firstName, input.lastName, input.birthPlace, input.nationalityCode, input.phone, input.address, input.city]) {
         if (value.length > 300) throw new Error('Uno de los campos supera el límite de caracteres.');
     }
     const birthDate = calendarDate(input.birthDate, false);
@@ -99,12 +122,12 @@ function studentFields(input: StudentDraft, allowMissingDni = false) {
         nameNeedsReview: !firstName || !lastName,
         dni,
         email: email || null,
-        phone: optional(input.phone),
+        phone,
         birthDate,
         birthPlace: optional(input.birthPlace),
-        nationalityCode: optional(input.nationalityCode)?.toUpperCase() ?? null,
+        nationalityCode: optional(input.nationalityCode),
         address: optional(input.address),
-        city: optional(input.city),
+        city,
         active: triState(input.active),
     };
 }
@@ -124,10 +147,16 @@ export async function saveStudent(input: StudentDraft, existingId?: string): Pro
     if (student && !existing?.exists())
         throw new Error('La ficha ya no existe. Actualizá la página.');
 
-    // Only a previously imported partial profile may remain without a DNI.
-    // New profiles and existing profiles with a verified DNI still require one.
-    const allowMissingDni = Boolean(existing?.exists() && !existing.data().dni);
-    const fields = studentFields(input, allowMissingDni);
+    // Preserve missing historical values without blocking unrelated corrections.
+    // Every newly created profile must include all six required fields.
+    const prior = existing?.exists() ? existing.data() : null;
+    const fields = studentFields(input, {
+        dni: Boolean(prior && !prior.dni),
+        names: Boolean(prior && (!prior.firstName || !prior.lastName)),
+        birthDate: Boolean(prior && !prior.birthDate),
+        phone: Boolean(prior && !prior.phone),
+        city: Boolean(prior && !prior.city),
+    });
     if (fields.dni) await ensureUniqueDni(fields.dni, existingId);
     // Keep the academic write and the corresponding feed entry atomic.
     const audit = await prepareAuditEntry(student ? 'student.updated' : 'student.created', fields.fullName);
