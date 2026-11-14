@@ -366,7 +366,7 @@ export function LiveStudents() {
                                 <span>{detail.display}</span>
                                 <button
                                     type="button"
-                                    className={Styles.detailEditButton}
+                                    className={`${Styles.detailEditButton} academyWriteAction`}
                                     onClick={() => startDetailEdit(detail.field, detail.value)}
                                     aria-label={`Editar ${detail.label}`}
                                 ><Pencil size={14} aria-hidden="true" />{t('Editar')} {detail.label}</button>
@@ -543,7 +543,7 @@ export function LiveEnrollments() {
                     <td>{localizeCourseName(coursesById.get(item.courseId)?.name) || t('Curso sin ficha')}</td>
                     <td>{displayDate(item.startDate)}</td>
                     <td><Pill tone={item.status === 'active' ? 'success' : item.status === 'pending_review' ? 'warning' : 'neutral'}>{t(statusText(item.status))}</Pill></td>
-                    <td><button type="button" className={Styles.tableLink} onClick={() => setSelectedEnrollmentId(item.id)}><Pencil size={14} aria-hidden="true" />{t('Editar inscripción')}</button></td>
+                    <td><button type="button" className={`${Styles.tableLink} academyWriteAction`} onClick={() => setSelectedEnrollmentId(item.id)}><Pencil size={14} aria-hidden="true" />{t('Editar inscripción')}</button></td>
                 </tr>)}</tbody></table>
                 {!filtered.length && <EmptyState title={t('Sin inscripciones')} message={t('No hay inscripciones para ese filtro.')} />}
             </div>}
@@ -585,7 +585,7 @@ export function LiveEnrollments() {
                             <dd className={Styles.detailRead}>
                                 <span>{detail.display}</span>
                                 {selectedEnrollment.status !== 'transferred' &&
-                                    <button type="button" className={Styles.detailEditButton} onClick={() => startEnrollmentFieldEdit(detail.field, detail.value)}>
+                                    <button type="button" className={`${Styles.detailEditButton} academyWriteAction`} onClick={() => startEnrollmentFieldEdit(detail.field, detail.value)}>
                                         <Pencil size={14} aria-hidden="true" />{t('Editar')} {detail.label}
                                     </button>}
                             </dd>}
