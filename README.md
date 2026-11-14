@@ -1,136 +1,169 @@
-# Academia Llongueras — Academy Website & Management Portal
+# Academia Llongueras — Trilingual Website & Academic Portal
 
-A responsive, trilingual academy website and role-based academic management portal built as an independent software-engineering portfolio project. It pairs a public-facing institutional experience with a protected Firebase-backed workspace for academy administrators and teachers.
+**An institutional website and academic management portal for Academia Llongueras, developed by PG Labs with React, TypeScript and Firebase.** The project combines a responsive public experience with an authenticated workspace for managing academic records and workflows.
 
-**Stack:** React 19 · TypeScript · Vite · React Router · Firebase Authentication · Cloud Firestore · CSS Modules · Lucide React
+**Languages:** Spanish (default) · English · Brazilian Portuguese (ES / EN / PT-BR)
 
-> [!IMPORTANT]
-> **Independent portfolio project — not an official Academia Llongueras website.** Brand references, photographs, and institutional information belong to their respective owners. This repository does not imply affiliation or endorsement. The authenticated workspace connects to real, access-controlled Firestore collections: **never use publicly shared test credentials or commit student records, exports, or private keys**.
+**Technology:** React 19 · TypeScript · Vite · React Router · Firebase Authentication · Cloud Firestore · CSS Modules · Lucide React · SweetAlert2
 
-## What it does
+**Live website:** [Academia Llongueras](https://llongueras-academy.vercel.app/)
 
-The **public website** presents the academy's history, educational methodology, areas of study, media gallery, and contact details. It includes responsive navigation, accessible interactions, Spanish-first copy with English and Brazilian Portuguese options, and a consistent light theme.
+> **Project status:** An actively developed first institutional version, subject to the academy's review. Administrative workflows are implemented against actual, access-controlled Firestore records. Student self-service and full teacher grading workflows are **not yet implemented**. A deployed website or successful build is not evidence of a completed security audit.
+>
+> **Privacy and ownership:** This public repository contains application source and public-facing media only. Real student exports, credentials, Firebase Admin service accounts, and backups must remain outside the repository. Institutional names and assets remain the property of their respective owners; publication and usage rights should be confirmed with the academy.
 
-The **authenticated workspace** provides the following implemented functionality:
+## Key features
 
-| Area | Available functionality |
+### Public institutional website
+- Responsive, light-themed presentation of the academy, its history, leadership, training opportunities and media.
+- Spanish, English and Brazilian Portuguese interfaces with localized program descriptions and accessible language selection.
+- Search and category filters for public training offerings, contact information and campus access.
+- A public marketing catalog kept separate from the private Firestore course records until institutional nomenclature is approved.
+
+### Authenticated academic workspace
+
+| Module | Current implementation |
 | --- | --- |
-| Authentication | Firebase email/password sign-in with custom-claim-based administrator and tutor roles; session verification and protected routes. |
-| Dashboard | Firestore-backed course, student, and enrollment counts; administrator activity feed; quick navigation. |
-| Students | Search, filter, view, create and edit Firestore student profiles without duplicating records across multiple courses. |
-| Teachers | Firestore-backed teacher profiles, activity status, and assignments to existing courses. The collection may initially be empty. |
-| Courses | Read and update existing Firestore course details; link students and teachers to courses. |
-| Enrollments | View, create, edit, change status, and transfer course enrollments while retaining history. |
-| Attendance | Record attendance by class date and enrollment, including individual saves and late-arrival tracking. |
-| Evaluations | Create course evaluations and record grades associated with existing enrollments. |
-| Tutor portal | Read-only access to courses explicitly assigned to a verified, active teacher account. |
-| Account settings | Edit personal profile and supported account credentials through Firebase. |
+| Authentication | Email/password sign-in using Firebase Authentication and trusted role claims. |
+| Administration dashboard | Live Firestore student, course and enrollment counts, recent activity and navigation. |
+| Student profiles | Search, filter, view, create and edit verified fields; preserve imported identity information and optional legacy values. |
+| Teachers | Create and edit teacher profiles, active status and course assignments. |
+| Courses | Inspect and edit existing course metadata; preserve stable Firestore document IDs. |
+| Enrollments | Create, edit, review status and transfer enrollments without duplicating student profiles or discarding history. |
+| Attendance | Register attendance and punctuality for existing enrollments and class dates. |
+| Evaluations and grades | Create evaluations and record grades linked to existing academic records. |
+| Tutor workspace | **Read-only** visibility of explicitly assigned courses for verified active tutor accounts. |
+| Personal settings | Update permitted profile fields and account credentials through Firebase. |
+| Action feedback | Localized SweetAlert2 confirmations and success messages after completed writes. |
 
-**Data provenance:** Academic records displayed by the workspace come from Firestore, subject to Security Rules. The dashboard deliberately retains **one illustrative value**, clearly labelled *"Saldo mensual pendiente (inventado): $ 1.043.000"*. It is **not** a billing subsystem or a calculation based on financial records. No demonstration-data mode or sample student directory is shipped.
+The dashboard includes a **“Module under construction”** placeholder, not an invented financial balance. No billing or payment processing is implemented.
 
 ## Architecture
 
 ```text
-llongueras-academy/
-├── public/
-│   ├── flags/                    # Locale icons
-│   └── media/                    # Public presentation assets
-├── src/
-│   ├── components/               # Reusable UI and authenticated shell
-│   ├── context/
-│   │   ├── AuthContext.tsx        # Verified Firebase session
-│   │   ├── AcademyContext.tsx     # Firestore record subscriptions
-│   │   └── ActivityContext.tsx    # Administrative activity stream
-│   ├── data/                     # Sourced, public academy content
-│   ├── i18n/                     # UI translations and display preferences
-│   ├── lib/                      # Firebase setup, permissions, mutations
-│   ├── pages/                    # Route-level features and local CSS Modules
-│   │   ├── Landing/
-│   │   ├── Dashboard/
-│   │   ├── LiveAcademy/          # Shared student/course/enrollment views
-│   │   ├── Students/             # Route boundary for student management
-│   │   ├── Courses/
-│   │   ├── Enrollments/
-│   │   ├── Teachers/
-│   │   ├── Attendance/
-│   │   ├── Evaluations/
-│   │   ├── Teaching/
-│   │   ├── Login/
-│   │   └── Profile/
-│   ├── styles/                   # Global styles and theme tokens
-│   ├── App.tsx                   # Routes and authorization guards
-│   └── Main.tsx                  # Application bootstrap
-├── firestore.rules               # Firestore access control
-├── firebase.json                 # Optional CLI rules deployment configuration
-├── vercel.json                   # SPA routing and HTTP security headers
-├── .nvmrc                        # Node 24
-└── package.json
+public/
+  flags/                    Language flags
+  media/                    Public institutional media
+src/
+  components/               Shared UI, navigation and application shell
+  context/                  Authentication, Firestore subscriptions, activity
+  data/                     Public-facing institutional content
+  i18n/                     Spanish-first UI, English and Portuguese dictionaries
+  lib/                      Firebase client, role helpers and data mutations
+  pages/                    Landing, students, courses, enrollment,
+                            teachers, attendance, grades and profile features
+  styles/                   Global tokens and shared visual rules
+  App.tsx                   Route guards and feature routing
+  Main.tsx                  Application entry point
+firestore.rules             Version-controlled Firestore access policy
+firebase.json               Rules deployment configuration
+vercel.json                 SPA routing and browser security headers
+scripts/                    Development checks (no private data)
 ```
 
-The structure favors feature-oriented page folders, TypeScript data models, CSS Modules, and isolated Firestore mutation services. The `LiveAcademy` module currently shares some presentation logic between the closely related student, course, and enrollment routes; it can be split further as those features grow without altering the persisted document IDs.
+The frontend uses feature-based components and CSS Modules. Firebase subscriptions live in contexts; authenticated writes are kept in dedicated mutation services. Code identifiers and explanatory comments are maintained in **English**, while the UI is translated independently.
 
-### Security model
+## Roles and access boundaries
 
-- Institutional privileges are granted through **trusted Firebase Authentication custom claims**, never through a client-side role switch.
-- Tutor access additionally checks an active `teachers/{teacherId}` document bound to the authenticated `authUid`. Teacher accounts are provisioned and linked separately by an authorized administrator.
-- **Firestore Security Rules** are the authorization boundary. Navigation guards only improve the client experience; they do not replace server-side access checks.
-- Academic mutation modules validate records and use transactions for critical operations. Some business constraints, including global uniqueness and concurrent course capacity allocation, still require stronger server-side enforcement before wider institutional use.
-- Audit entries track administrative actions, but a mature production system still requires backup and recovery procedures, security rule tests, retention policies, and operational monitoring.
+| Resource | Anonymous visitors | Tutor accounts | Administrator accounts |
+| --- | --- | --- | --- |
+| Public website and media | Yes | Yes | Yes |
+| Student, enrollment, attendance and grade records | No | No | Yes |
+| Course documents | No | Read assigned individual courses only | Yes |
+| Teacher profiles | No | Own active, UID-linked profile only | Yes |
+| Own account profile | No | Read/write validated personal fields | Read/write validated personal fields |
+| Administrative activity log | No | No | Read; append validated entries |
+| Student self-service portal | Not implemented | Not applicable | Not implemented |
 
-## Getting started
+**Critical distinction:** Client-side route guards and the fact that Vercel hosts a public URL **do not grant database access**. For Firebase Web SDK requests, the enforced authorization boundary is the **Firestore Security Rules currently deployed to the Firebase project**. Custom roles are assigned from a trusted Admin SDK environment, not from client-controlled fields.
 
-**Requirements:** Node.js **24.12+** (Node 24 LTS) and npm. Firebase 13 dependencies require this minimum runtime. Do not install the privileged Firebase Admin SDK in this frontend repository.
+### Security posture and known gaps
+
+**Present in source:**
+- Custom-claim-based administrator/tutor access; tutors are checked against active teacher documents and matching Firebase Auth UIDs.
+- No anonymous reads/writes to private Firestore collections under the version-controlled rules.
+- Own-account profile field allowlists; append-only activity log writes for approved administrators.
+- UI confirmation before writes, record validation and selected atomic batches/transactions.
+- SPA security headers including frame blocking, MIME-sniffing protection and a referrer policy.
+- Explicit Git exclusions for private exports, admin keys and confidential archives.
+
+**Still required before broad institutional rollout:**
+- **Verify deployed rules independently.** The repository's `firestore.rules` is not proof of what is currently live. Vercel deployments do **not** publish Firestore rules.
+- Add and run **Firebase Emulator security tests** covering anonymous reads, basic authenticated users, administrators, tutors (including revoked/deactivated profiles), cross-user account access, audit immutability and invalid writes. These tests are not yet automated in CI.
+- Introduce stricter **server-enforced schemas and invariants** for privileged academic writes. The current rules grant administrators broad create/update/delete access; some validation, DNI uniqueness and course-capacity checks are implemented in the client and can be bypassed or raced.
+- Review Google Cloud **IAM roles and service-account keys**. Firebase Admin SDK credentials can bypass client Firestore Security Rules; never embed them in the frontend or expose them in Vercel static assets.
+- Evaluate Firebase **App Check**, Authentication email-enumeration protection and stronger sign-in controls/MFA for privileged accounts before enabling enforcement. None should be assumed active from this repository alone.
+- Approve backup/restore, privacy retention, access review, incident response and monitoring procedures.
+
+### Security checks before publishing
+
+```bash
+npm run security:check   # Detect sensitive paths or private-key material in tracked files
+npm run typecheck        # Check application TypeScript types
+npm run build            # Generate the production bundle
+```
+
+The repository check is a **guardrail against accidental secret commits**, not a penetration test or a replacement for GitHub secret scanning, Firebase Emulator tests or reviewing Git history.
+
+For the Firestore policy itself, use the **Firebase Emulator Suite** and confirm the results against each expected role. After testing and approving the intended Firebase project, publish rule changes separately through Firebase Console or the Firebase CLI:
+
+```bash
+firebase deploy --only firestore:rules --project academia-llongueras
+```
+
+**Do not deploy rule changes without validating them first.** This command modifies the live authorization policy and is not performed by a GitHub PR or Vercel build.
+
+## Local development
+
+**Requirements:** Node.js 24.12+ and npm.
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Open `http://localhost:5173`. Other useful commands:
+Visit `http://localhost:5173`.
 
 ```bash
-npm run typecheck   # TypeScript validation
-npm run build       # TypeScript + production bundle
-npm run preview     # Serve the production build locally
+npm run typecheck
+npm run build
+npm run preview
+npm run security:check
 ```
 
-### Firebase configuration
+Firebase's Web SDK project configuration is intentionally part of the public frontend and **is not an administrator secret**. Authentication permissions, deployed security rules, Google Cloud IAM and optional App Check determine access. Private Admin SDK JSON keys, passwords and exports are never required to build or deploy the web app.
 
-The project currently initializes the **public Firebase Web SDK configuration** for the `academia-llongueras` project in `src/lib/Firebase.ts`. Firebase web-client configuration is not an Admin SDK credential and may be present in frontend source. **Never** commit service-account JSON files, Firebase Admin keys, imported CSVs, database exports, or actual user passwords.
+Any privileged account provisioning, role assignment or data import must run from a **separate trusted environment**. Do not place Admin SDK credentials, student CSVs, database snapshots or service-account exports in this repository, even temporarily.
 
-A privileged administrator must provision users and configure their **custom claims** through a trusted environment. The Firestore `teachers` collection is populated when actual profiles are created through the administration UI; the application does not seed invented teachers or users. Keep all migration and account-linking tooling outside the public repository.
+## Deployment
 
-**Important:** `firestore.rules` is source-controlled but is **not deployed automatically by Vercel**. After reviewing the rules and confirming the correct Firebase project, publish them through Firebase Console or using the Firebase CLI:
+1. Import this repository into Vercel with the **Vite** preset and **Node.js 24.x**.
+2. Build with `npm ci` and `npm run build`, output directory `dist`.
+3. Configure the correct production domain in Firebase Authentication authorized domains.
+4. Check that Firestore's **active** rules match the reviewed policy, with anonymous access denied and tutor access limited to assigned courses.
+5. Verify sign-in, authorization, save/rollback behavior, accessibility and language selection in a staging environment before institutional use.
 
-```bash
-firebase deploy --only firestore:rules --project academia-llongueras
-```
+`vercel.json` contains SPA rewrites and baseline HTTP headers. Vercel publishes the static website; it does **not** create academic data, grant roles, store private Admin SDK credentials, enforce Firestore rules or configure Firebase backups.
 
-This command changes the live project's database rules. Review and test permissions with the Rules Playground / emulator **before executing it**, especially if the production Firebase project is already in use.
+## Internationalization
 
-## Deployment on Vercel
+Spanish is the default language. English and Brazilian Portuguese are available across institutional pages and the authenticated interface. Translation resources are separated into `src/i18n/Translations.ts`, `Portuguese.ts` and `PortuguesePublic.ts`.
 
-1. Push the project to a GitHub repository. Keep the repository root at the folder containing `package.json`.
-2. In Vercel choose **Add New → Project**, import the GitHub repository, and select **Vite** as the framework.
-3. Verify **Node.js 24.x**, install command `npm ci`, build command `npm run build`, and output directory `dist`. The repository's `package.json` and `vercel.json` include these defaults.
-4. Deploy. The included SPA rewrite supports refreshing deep routes such as `/login` and `/app/students`.
-5. In **Firebase Console → Authentication → Settings → Authorized domains**, add the assigned `*.vercel.app` production domain (and any custom domain). This authorization is required for Firebase Authentication to work on the deployed site.
-6. Confirm Firestore Security Rules are published, then verify anonymous access is denied for academic records, administrators can perform allowed operations, and tutors only see their assigned courses.
+Academic course **display names** may be localized in the UI, but Firestore IDs and stored names remain unchanged. For newly approved institutional names and descriptions, update all three locales and verify search, forms and accessibility labels together.
 
-A Vercel deployment publishes only the static frontend. It **does not** create student/teacher documents, set Firebase custom claims, deploy Firestore rules, or replace backup and monitoring procedures. Domain-registration costs, if applicable, are handled separately by the registrar.
+## Roadmap
 
-## Roadmap / known limitations
+- Review and approve the public course catalog, institution-provided assets and curriculum terminology.
+- Configure verified teacher assignments and complete teacher-facing attendance and grading workflows.
+- Build a student account model with strictly scoped access to each student's own enrollments, schedules, attendance and grades.
+- Introduce timetables, academic groups, subject plans and institution-approved grading policies.
+- Harden server-side invariants and authorization tests; establish backups, recovery and data-governance practices.
+- Conduct keyboard, screen reader, responsive and end-to-end regression testing.
 
-The current implementation is a **working portfolio foundation**, not a fully commissioned student-information system. Priorities before an institutional production rollout include:
+## Project information
 
-- Institution-approved teacher account provisioning, complete tutor workflows, and faculty/student authorization policies.
-- Server-enforced uniqueness, transactional capacity allocation, stricter field validations, and more comprehensive Firestore rules tests.
-- Real billing/payment models if required; the dashboard's monthly balance is deliberately illustrative.
-- Course groups, scheduling, grade policies, exports, recovery procedures, audit retention, and monitoring.
-- Accessibility audits, end-to-end tests, and documented data-governance/privacy approval.
+**Developer:** Pablo Gilabert · PG Labs
 
-## Acknowledgements and attribution
+**Suggested GitHub description:** Trilingual (ES/EN/PT-BR) academy website and Firebase-backed academic portal built with React 19, TypeScript, and Vite. Features role-based access, student and teacher records, courses, enrollments, attendance, grading, and responsive design.
 
-Academia Llongueras and associated trademarks belong to their respective owners. Public institutional information was reviewed against published sources, including [Llongueras Argentina](https://llonguerasargentina.com.ar/pages/historia), [Llongueras Institute](https://llonguerasinstitute.com/nosotros/el-metodo/), and public [academy announcements](https://www.schoolandcollegelistings.com/AR/Buenos-Aires/200286546679031/Academia-Llongueras-Argentina). The design does not claim official affiliation, ownership of brand assets, or permission to redistribute third-party media. Confirm asset usage rights before publishing a public repository.
-
-**Author:** Pablo Gilabert · PG Labs
+This repository showcases a real-world frontend and Firebase architecture. It is **not** a release of the academy's private student data, a claim of completed institutional approval or a guarantee of production-grade security.
