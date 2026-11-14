@@ -784,7 +784,9 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .courseGrid > .courseCard:nth-child(n) {
+    .courseGrid > .courseCard:nth-child(n),
+    .courseGrid > .courseCard:nth-child(4):nth-last-child(2),
+    .courseGrid > .courseCard:nth-child(5):last-child {
         grid-column: auto;
     }
 
