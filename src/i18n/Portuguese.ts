@@ -347,7 +347,7 @@ export const PortugueseTranslations: Record<string, string> = {
     "Registrá docentes y asignales los cursos existentes. Las cuentas de acceso se habilitan por separado.": "Cadastre docentes e atribua os cursos existentes. As contas de acesso são habilitadas separadamente.",
     "Esta sección está protegida. Solo los administradores pueden consultar las fichas docentes.": "Esta seção é protegida. Somente administradores podem consultar os cadastros de docentes.",
     "Accedé al panel académico con tu cuenta institucional de Firebase Authentication.": "Acesse o painel acadêmico com sua conta institucional do Firebase Authentication.",
-    "Ingresá con tu cuenta institucional. Los administradores gestionan cursos, alumnos e inscripciones; otras secciones incluyen información ilustrativa.": "Entre com sua conta institucional. Os administradores gerenciam cursos, alunos e matrículas; outras seções incluem informações ilustrativas.",
+    "Ingresá con tu cuenta institucional. Los administradores gestionan la información académica; los docentes consultan únicamente los cursos que tienen asignados.": "Entre com sua conta institucional. Administradores gerenciam as informações acadêmicas; docentes consultam apenas os cursos atribuídos a eles.",
     "MI ESPACIO PERSONAL": "MEU ESPAÇO PESSOAL",
     "Actualizá tus datos personales y las credenciales con las que ingresás al campus.": "Atualize seus dados pessoais e as credenciais usadas para acessar o campus.",
     "Información personal": "Informações pessoais",
