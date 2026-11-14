@@ -2,6 +2,9 @@
 import { PublicPortugueseTranslations } from './PortuguesePublic';
 
 export const PortugueseTranslations: Record<string, string> = {
+    "Para editar el curso, la fecha de inscripción o el estado académico, utilizá la sección ": "Para editar o curso, a data de matrícula ou a situação acadêmica, use a seção ",
+    ". La ficha personal no se duplica al inscribir a un alumno en varios cursos.": ". O cadastro pessoal não é duplicado ao matricular um aluno em vários cursos.",
+    "Los cambios se guardan automáticamente en la base de datos de la academia": "As alterações são salvas automaticamente no banco de dados da academia",
     "Completá los datos del alumno. Correo electrónico, nacionalidad y dirección son opcionales.": "Preencha os dados do aluno. E-mail, nacionalidade e endereço são opcionais.",
     "Nombre completo registrado:": "Nome completo registrado:",
     "Completá Nombre y Apellido para verificarlo sin perder el nombre importado.": "Preencha Nome e Sobrenome para verificá-lo sem perder o nome importado.",
