@@ -189,6 +189,7 @@ export function AcademyProvider({ children }: { children: ReactNode }) {
         if (user?.role !== 'admin')
             return;
 
+        // Live academic subscriptions are established only for verified administrators.
         const stopCourses = onSnapshot(collection(db, 'courses'), snapshot => {
             setCourses({ items: snapshot.docs.map(doc => readCourse(doc.id, doc.data())), loading: false, error: null });
         }, error => setCourses({ items: [], loading: false, error: readableError(error) }));

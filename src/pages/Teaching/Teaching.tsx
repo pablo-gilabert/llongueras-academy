@@ -63,6 +63,7 @@ export function Teaching() {
 
             // Individual document reads match the rule that checks each course ID.
             void Promise.all(courseIds.map(async courseId => {
+                // Individual document reads match the tutor rules; collection listing is denied.
                 const courseDoc = await getDocFromServer(doc(db, 'courses', courseId));
                 if (!courseDoc.exists())
                     return null;

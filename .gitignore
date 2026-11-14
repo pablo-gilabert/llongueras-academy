@@ -47,3 +47,15 @@ private-data/
 private-files/
 secrets/
 credentials/
+
+# Archives and credentials accidentally packaged outside their private directory
+firebase-private.*
+*.rar
+*.7z
+*.zip
+*.tar
+*.tgz
+*.pem
+*.p12
+*.pfx
+*.key

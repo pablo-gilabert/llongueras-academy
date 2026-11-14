@@ -35,6 +35,7 @@ const statusOptions = [
     { value: 'withdrawn', label: 'Baja' },
 ];
 
+// Imported full names are never split heuristically; administrators verify each name component.
 export function StudentEditor({ student, onClose }: {
     student?: AcademyStudent;
     onClose: () => void;

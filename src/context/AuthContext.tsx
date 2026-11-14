@@ -19,6 +19,7 @@ import type { User } from '../Types';
 // A tutor additionally needs an active, matching Firestore teacher profile.
 /** Resolve a trusted role from ID-token claims and the teacher profile binding. */
 async function getVerifiedUser(firebaseUser: FirebaseUser): Promise<User | null> {
+    // Only signed Firebase ID-token claims can authorize institutional roles.
     const token = await firebaseUser.getIdTokenResult();
     const { role, teacherId } = token.claims;
 

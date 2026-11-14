@@ -87,6 +87,7 @@ export function Landing() {
         ? ({ Todas: 'All areas', Carrera: 'Career', Corte: 'Cutting', Color: 'Color', Especialización: 'Specialization' } as Record<string, string>)[value] ?? value
         : t(value);
 
+    // Public training content stays separate from private, role-protected Firestore records.
     const filteredCourses = TRAINING.filter(course => {
         const searchableText = normalizeSearch([
             course.title, course.titleEn, course.titlePt,
