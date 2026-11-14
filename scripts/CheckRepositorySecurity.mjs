@@ -19,7 +19,8 @@ const violations = [];
 
 for (const file of tracked) {
     // Git can force-add ignored environment files: block that escape hatch too.
-    const isPrivateEnv = /(?:^|\\/)\\.env(?:\\.[^/]+)?$/i.test(file) && !/\\.example$/i.test(file);
+    const fileName = file.split('/').pop() ?? '';
+    const isPrivateEnv = (fileName === '.env' || fileName.startsWith('.env.')) && !fileName.endsWith('.example');
     if (isPrivateEnv || sensitivePaths.some(pattern => pattern.test(file))) {
         violations.push(`Sensitive tracked path: ${file}`);
         continue;
