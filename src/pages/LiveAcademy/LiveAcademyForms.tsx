@@ -12,7 +12,7 @@ import {
     writeError,
 } from '../../lib/AcademyMutations';
 import type { AcademicStatus, EnrollmentDraft, StudentDraft, TransferDraft } from '../../lib/AcademyMutations';
-import { t } from '../../i18n/Translations';
+import { getActiveLocale, localizeCourseName, t } from '../../i18n/Translations';
 import Styles from './LiveAcademy.module.css';
 
 function localToday() {
@@ -191,8 +191,8 @@ export function EnrollmentEditor({ enrollment, students, courses, initialStudent
                     options={[
                         { value: '', label: 'Seleccionar curso' },
                         ...courses.filter(course => course.active || enrollment?.courseId === course.id)
-                            .slice().sort((a, b) => a.name.localeCompare(b.name, 'es'))
-                            .map(course => ({ value: course.id, label: course.name })),
+                            .slice().sort((a, b) => localizeCourseName(a.name).localeCompare(localizeCourseName(b.name), getActiveLocale()))
+                            .map(course => ({ value: course.id, label: localizeCourseName(course.name) })),
                     ]}
                 />
                 <TextInput label="Fecha de inicio" type="date" value={form.startDate} required onChange={value => update('startDate', value)} />
@@ -272,8 +272,8 @@ export function TransferEditor({ enrollment, courses, onClose }: {
                 options={[
                     { value: '', label: 'Seleccionar curso' },
                     ...courses.filter(course => course.active && course.id !== enrollment.courseId)
-                        .slice().sort((a, b) => a.name.localeCompare(b.name, 'es'))
-                        .map(course => ({ value: course.id, label: course.name })),
+                        .slice().sort((a, b) => localizeCourseName(a.name).localeCompare(localizeCourseName(b.name), getActiveLocale()))
+                        .map(course => ({ value: course.id, label: localizeCourseName(course.name) })),
                 ]}
             />
             <TextInput
