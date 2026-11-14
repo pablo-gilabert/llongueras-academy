@@ -1,3 +1,6 @@
+// Security Rules apply to Firebase Web SDK requests, not privileged Admin SDK calls.
+// A Vercel deployment does not publish this policy: test with the emulator first,
+// then deploy separately to the intended Firebase project after authorization review.
 rules_version = '2';
 
 service cloud.firestore {
